@@ -45,7 +45,7 @@
       </div>
 
 
-      <form>
+      <!-- <form>
         <div = class ="p-1">
           <div class = "form-row">
             <div class="col">
@@ -92,7 +92,52 @@
           <button class="submit-button" type="submit">Submit</button>
           <button class="reset-button" type="reset">Reset</button>
         </div>
+      </div> -->
+
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Customers Information</h1>
+          <p class="lead">Search existing customers , edit their details or add new customers using the forms below.</p>
+        </div>
       </div>
+      <h2> <strong>Customer</strong> </h2>
+
+      <form class="needs-validation" novalidate>
+        <div class="form-row">
+          <div class="col-md-4 mb-3">
+            <label for="validationCustom01">First Name</label>
+            <input type="text" class="form-control" id="validationCustom01" placeholder="First Name" required>
+            <label for="validationCustom02">Middle Name</label>
+            <input type="text" class="form-control" id="validationCustom02" placeholder="Middle Name">
+            <label for="validationCustom03">Last Name</label>
+            <input type="text" class="form-control" id="validationCustom03" placeholder="Last Name" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="validationCustom04">Phone</label>
+            <input type="number" class="form-control" id="validationCustom04" placeholder="Phone" required>
+            <label for="validationCustom05">Email</label>
+            <input type="text" class="form-control" id="validationCustom05" placeholder="Email" required>
+            <!-- <div class="invalid-feedback">
+            Please provide a valid quantity. -->
+            <label for="validationCustom06">Email</label>
+            <input type="text" class="form-control" id="validationCustom06" placeholder="Adress" required>
+          </div>
+            <div class="col-md-4 mb-3">
+              <label for="exampleFormControlTextarea1" id = "cdescription">Customer Notes</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows = "8"></textarea>
+            </div>
+            <div class = "buttons">
+              <button class="submit-button" type="submit">Submit</button>
+              <button class="reset-button" type="reset">Reset</button>
+            </div>
+        </div>
+      </form>
+
+
+
+
+
+
       
       <h2><strong>Search Customers</strong></h2>
 
@@ -115,7 +160,7 @@
       
 
         <div class="p-2">
-          <table class="table table-striped table-hover">
+          <table class="table table-striped table-hover pointer">
             <thead>
               <tr>
                 <th scope="col">ID</th>

@@ -1,5 +1,4 @@
 
-
 function dropdownmenuSet(val){
 	if(val.innerHTML!=""){
 		$('#dropdownMenuButton1').val(val.innerHTML);
@@ -54,13 +53,15 @@ function getNewCustomerData() {
     
 }
 
-  // Using axios make a call to the API and get the customers information and render it in the table 
-  // NOTE: after first deployement of the backEnd server URI can be changed to the public one 
-  axios.get("http://localhost:3000/api/customers").then(({data}) => {
-   let customerRows = generateRows(data.customers);
-   console.log(data.customers);
-   document.getElementById("tableBody").replaceChildren(...customerRows);
-});
+
+//   // Using axios make a call to the API and get the customers information and render it in the table 
+//   // NOTE: after first deployement of the backEnd server URI can be changed to the public one 
+//   axios.get("http://tjx-tracker.azurewebsites.net/api/customers" ).then(({data}) => {
+//    let customerRows = generateRows(data.customers);
+//    console.log(data.customers);
+//    document.getElementById("tableBody").replaceChildren(...customerRows);
+// });
+
 
 $("#addButton").on("click" , () => {
     let customer = getNewCustomerData();
