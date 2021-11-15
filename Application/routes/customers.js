@@ -7,9 +7,9 @@ var customersMockData = require('../mockdata/customers');
 /*
 router
 .route('/')
+
 .get((req, res, next) => {
     res.json(customersMockData)
-    
 })
 */
 

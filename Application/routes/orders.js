@@ -1,6 +1,16 @@
+﻿'use strict';
 var express = require('express');
 var router = express.Router();
+var ordersMockData = require("../mockdata/orders")
 // const db = require(database stuff)
+
+// mock data implementation:
+/*
+// GET users listing.
+router.get('/', function (req, res) {
+    res.json(ordersMockData);
+});
+*/
 
 router
 	.route('/')

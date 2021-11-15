@@ -1,6 +1,14 @@
 var express = require('express');
 var router = express.Router();
+var productsMockData = require("../mockdata/products")
 // const db = require(database stuff)
+
+// mock data implementation:
+/*
+router.route('/').get((req, res, next) => {
+    res.json(productsMockData)
+})
+*/
 
 router.route('/').get(async (req, res, next) => {
 	try {
