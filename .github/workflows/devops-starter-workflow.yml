@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - Develop
 
 env:
   AZURE_WEBAPP_NAME: "TJX-Tracker"    # set this to your application's name
