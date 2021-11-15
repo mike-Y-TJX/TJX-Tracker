@@ -78,6 +78,4 @@ exports.close = function () {
     });
 }
 
-//this.listen();
-
-module.exports = app;
+this.listen();
