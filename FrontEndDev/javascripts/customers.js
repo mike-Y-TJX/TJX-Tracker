@@ -40,12 +40,12 @@ function generateRows(customers) {
 function getNewCustomerData() {
     let customer = {
         customer_id:0,
-        first_name:$("#firstName").val(),
-        last_name:$("#lastName").val(),
-        phone:$("#phone").val(),
-        email:$("#email").val(),
-        customer_notes:$("#notes").val(),
-        address:$("#adress").val()
+        first_name:$("#validationCustom01").val(),
+        last_name:$("#validationCustom03").val(),
+        phone:$("#validationCustom04").val(),
+        email:$("#validationCustom05").val(),
+        customer_notes:$("#FormControlTextarea1").val(),
+        address:$("#validationCustom06").val()
     }
     
     let arrayCustomer = [customer];
@@ -69,10 +69,20 @@ $("#addButton").on("click" , () => {
     let customerRow = generateRows(customer);
     document.getElementById("tableBody").append(...customerRow);
 })
+$("#resetButton").on("click" , () => {
+  $("#validationCustom01").val("");
+  $("#validationCustom02").val("");
+  $("#validationCustom03").val("");
+  $("#validationCustom04").val("");
+  $("#validationCustom05").val("");
+  $("#validationCustom06").val("");
+  $("#FormControlTextarea1").val("");
+})
 
+// When a row on the customer table is clicked get the id and populate the fields 
 $("#tableBody").on("click" , function(e) {
   console.log("Clicked");
-  let row = $(e.target).closest('tr').children().html();
-  console.log(row);
+  let id = $(e.target).closest('tr').children().html();
+  console.log(id);
 
 })
