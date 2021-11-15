@@ -17,7 +17,7 @@ router
 	.get(async (req, res, next) => {
 		try {
 			// SQL query
-			const [rows, fields] = await db.query(`SELECT * FROM order;`);
+			const [rows, fields] = await db.query(`SELECT * FROM orders;`);
 
 			// validate db returned results, return to user or throw error
 			if (rows && rows.length > 0) {
@@ -26,7 +26,7 @@ router
 				throw new Error('No orders found');
 			}
 		} catch (er) {
-			res.status(400).send(er);
+			res.status(400).send(er.message);
 		}
 	})
 	.post(async (req, res, next) => {
@@ -39,7 +39,7 @@ router
 		try {
 			// SQL query
 			const [rows, fields] = await db.query(
-				`SELECT * FROM order
+				`SELECT * FROM orders
                 WHERE order_id = ?;`,
 				[req.params.id]
 			);
@@ -69,7 +69,7 @@ router
 			await db.beginTransaction();
 
 			const existingOrderDeleted = await db.query(
-				`DELETE FROM order
+				`DELETE FROM orders
                 WHERE order_id = ?;`,
 				[req.params.id]
 			);
