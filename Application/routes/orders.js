@@ -23,10 +23,10 @@ router
 			if (rows && rows.length > 0) {
 				res.json(rows);
 			} else {
-				throw new Error('No orders found');
+				throw new Error('No Orders Found');
 			}
 		} catch (er) {
-			res.status(400).send(er.message);
+			res.status(400).send('No Orders Found');
 		}
 	})
 	.post(async (req, res, next) => {
@@ -48,10 +48,10 @@ router
 			if (rows && rows.length > 0) {
 				res.json(rows);
 			} else {
-				throw new Error('No order found');
+				throw new Error('No Order Found');
 			}
 		} catch (er) {
-			res.status(400).send('Order not found');
+			res.status(400).send('No Order Found');
 		}
 	})
 	.put(async (req, res, next) => {
@@ -80,10 +80,10 @@ router
 			if (existingOrderDeleted[0].affectedRows > 0) {
 				res.send('Successfully deleted order');
 			} else {
-				throw new Error('Order not deleted');
+				throw new Error('Order Not Deleted');
 			}
 		} catch (er) {
-			res.status(400).send('Order not deleted');
+			res.status(400).send('Order Not Deleted');
 		}
 	});
 

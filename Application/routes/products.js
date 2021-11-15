@@ -22,7 +22,7 @@ router.route('/').get(async (req, res, next) => {
 			throw new Error('No products found');
 		}
 	} catch (er) {
-		res.status(400).send(er.message);
+		res.status(400).send('No products found');
 	}
 });
 
@@ -44,7 +44,7 @@ router
 				throw new Error('No product found');
 			}
 		} catch (er) {
-			res.status(400).send(er.message);
+			res.status(400).send('No product found');
 		}
 	})
 	.put(async (req, res, next) => {
@@ -80,7 +80,7 @@ router
 				throw new Error('Product not updated');
 			}
 		} catch (er) {
-			res.status(400).send(er.message);
+			res.status(400).send('Product not updated');
 		}
 	});
 

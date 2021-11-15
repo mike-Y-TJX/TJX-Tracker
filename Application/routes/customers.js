@@ -34,7 +34,7 @@ router
 				throw new Error('No customers found');
 			}
 		} catch (er) {
-			res.status(400).send(er.message);
+			res.status(400).send('No customers found');
 		}
 	})
 	.post(async (req, res, next) => {
@@ -102,7 +102,7 @@ router
 				// send new customer info to user
 				res.send(newCustomer);
 			} catch (er) {
-				res.status(400).send(er.message);
+				res.status(400).send("Not Valid");
 			}
 		} else {
 			// customer input was not valid
@@ -128,7 +128,7 @@ router
 				throw new Error('No customer found');
 			}
 		} catch (er) {
-			res.status(400).send(er.message);
+			res.status(400).send('No customer found');
 		}
 	})
 	.put(async (req, res, next) => {
@@ -176,7 +176,7 @@ router
 				throw new Error('Customer not updated');
 			}
 		} catch (er) {
-			res.status(400).send(er.message);
+			res.status(400).send('Customer not updated');
 		}
 	})
 	.delete(async (req, res, next) => {
@@ -198,7 +198,7 @@ router
 				throw new Error('Customer not deleted');
 			}
 		} catch (er) {
-			res.status(400).send(er.message);
+			res.status(400).send('Customer not deleted');
 		}
 	});
 
