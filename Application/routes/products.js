@@ -59,7 +59,7 @@ router
 					updatedProduct.product_quantity,
 					updatedProduct.product_description,
 					updatedProduct.image_url,
-					updatedProduct.product_sku,
+					req.params.id,
 				]
 			);
 
