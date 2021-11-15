@@ -1,10 +1,10 @@
-# Nodejs Express web application
+# Nodejs Express web application - TJX-Tracker
 
-Sample Nodejs Express web application built on [visual studio code](https://code.visualstudio.com/).
+TJX order tracking Nodejs Express web application built on [visual studio code](https://code.visualstudio.com/).
 
 Language| Framework | Runtime | Platform | Author |
 | --------| -------- | -------- |--------|--------|
-javascript| Express | node | Azure Web App| |
+javascript| Express | node | Azure Web App| TJX EIC September Cohort 2021 |
 
 ## Installation
 
