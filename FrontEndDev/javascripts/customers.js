@@ -69,3 +69,10 @@ $("#addButton").on("click" , () => {
     let customerRow = generateRows(customer);
     document.getElementById("tableBody").append(...customerRow);
 })
+
+$("#tableBody").on("click" , function(e) {
+  console.log("Clicked");
+  let row = $(e.target).closest('tr').children().html();
+  console.log(row);
+
+})
