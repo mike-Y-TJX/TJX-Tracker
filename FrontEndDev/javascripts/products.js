@@ -32,7 +32,18 @@ function newProductData() {
 	return productArray;
 }
 
-function generateRows(){
+function generateRows(products){
+
+	let rows = products.map((product) => {
+		let row = document.createElement('tr');
+		row.insertAdjacentHTML('beforeend', 
+		<td>${product.product_id}</td>
+		
+		
+		)
+
+	})
+
 
 }
 
