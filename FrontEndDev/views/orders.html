@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../javascripts/jquery.js"></script>  
+  <link rel="stylesheet" href="../css/bootstrap.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+
+  
+  <title>Orders Page</title>
+</head>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_SharedWithUsers msdt:dt="string">GRP-EIC Engineer 1 CH4 Members</mso:display_urn_x003a_schemas-microsoft-com_x003a_office_x003a_office_x0023_SharedWithUsers>
+<mso:SharedWithUsers msdt:dt="string">36;#GRP-EIC Engineer 1 CH4 Members</mso:SharedWithUsers>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+
+<body>
+  <main class="container">
+      <div class= "p-3">
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light scrolling-navbar" style="background-color: #9b0c23;">
+	  <a class ="text-light navbar-brand"href="#"> <strong>TJX-Order Tracker</strong></a>
+      <div class="pl-2">
+        <a class="nav-link text-warning" href="customers.html">Customers </a>
+      </div>
+      <div class="pl-3">
+        <a class="nav-link text-light" href="products.html">Products </a>
+      </div>
+
+      <div class="pl-3">
+        <a class="nav-link text-light" href="orders.html">Orders </a>
+      </div>
+      <div class="navbar-nav ms-auto pl-3">
+        <a class="nav-link text-light" href="#">Log out </a>
+      </div>     
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      </button>
+    </nav>
+</div>	
+	<section class="mt-4 pt-5 align-items-center">
+	<h1 class ="text-center color-black pt-5 text-align-center">Create an Order</h1>
+	<form>
+	    <div class="form-row pt-5">
+        <div class="col-sm-4">
+        <div class="form-group">
+            <div class="col-sm-8">
+			  <label style ="color:#9b0c23" for="orderid">OrderID</label>
+              <input class="form-control" id ="orderid"placeholder="Order ID"/>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+              <div class="col-sm-8">
+			      <label style ="color:#9b0c23"for="customerid">Customer ID</label>
+
+                <input class="form-control" id="customerid" placeholder="Customer ID"/>
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+              <div class="col-sm-8">
+			      
+			      <label style ="color:#9b0c23" for="statuscode">Order Status Code</label>
+
+                <input class="form-control" id="statuscode" placeholder="Order Status Code" />
+              </div>
+          </div>
+        </div>
+      </div>
+		      <div class="form-row pt-5">
+        <div class="col-sm-4">
+        <div class="form-group">
+            <div class="col-sm-8">
+			    <label style ="color:#9b0c23" for="time">Time</label>
+
+              <input class="form-control" placeholder="Time-stamp" readonly id ="time"/>
+            </div>
+        </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+              <div class="col-sm-8">
+			      <label  style ="color:#9b0c23"for="price">Order Price</label>
+
+                <input class="form-control" placeholder="Order Price" id ="price" />
+				
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="form-group">
+              <div class="col-sm-8">
+			      <label style ="color:#9b0c23" for="notes">Order Notes</label>
+
+                <input class="form-control" placeholder="Order Notes" id = "notes"/>
+              </div>
+          </div>
+        </div>
+      </div>
+	    <div class="form-group pt-5">
+        <div class="col-sm-6">
+        <div class="form-group">
+            <div class="col-sm-8">
+			  <label style ="color:#9b0c23" for="orderid">Quantity</label>
+              <input class="form-control" id ="orderid"placeholder="Quantity"/>
+            </div>
+        </div>
+        </div>
+        <div class="center-block pt-5 col-sm-6">
+        <div class="col-sm-8">
+          <a class="btn btn-primary" style="background-color: #9b0c23;" href="#!" role="button"
+          >Add Order</a>
+          </div>
+        </div>
+		</div>
+	 
+
+	</form>
+	</section>
+	<table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Order ID</th>
+                <th scope="col">Customer ID</th>
+                <th scope="col">Order Status Code</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Order Price</th>
+                <th scope="col">Order Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>ddf</td>
+                <td>dfs</td>
+                <td>dfsd</td>
+                <td>dfdgdffsd</td>
+                <td>ddfgdfgfsd</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>ddf</td>
+                <td>dfs</td>
+                <td>dfsd</td>
+                <td>dfdgdffsd</td>
+                <td>ddfgdfgfsd</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>ddf</td>
+                <td>dfs</td>
+                <td>dfsd</td>
+                <td>dfdgdffsd</td>
+                <td>ddfgdfgfsd</td>
+              </tr>
+              <tr>
+                <th scope="row">4</th>
+                <td>ddf</td>
+                <td>dfs</td>
+                <td>dfsd</td>
+                <td>dfdgdffsd</td>
+                <td>ddfgdfgfsd</td>
+              </tr>
+              <tr>
+                <th scope="row">5</th>
+                <td>ddf</td>
+                <td>dfs</td>
+                <td>dfsd</td>
+                <td>dfdgdffsd</td>
+                <td>ddfgdfgfsd</td>
+              </tr>
+            </tbody>
+          </table>
+	
+	
+	</main>
+</body>
