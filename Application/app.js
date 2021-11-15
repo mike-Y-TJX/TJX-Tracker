@@ -7,10 +7,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var customerRoutes = require("./routes/customers")
-
-var customersMockData = require("./mockdata/customers")
-var ordersMockData = require("./mockdata/orders")
-var productssMockData = require("./mockdata/products")
+var orderRoutes = require("./routes/orders")
+var productRoutes = require("./routes/products")
 
 var server; 
 var app = express();
@@ -25,23 +23,13 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use("/api/customers", customerRoutes)
+app.use("/api/orders", orderRoutes)
+app.use("/api/products", productRoutes)
+
+
 app.get("/", (req, res) => {
     res.render("index")
-})
-
-
-app.get("/appget/customers", (req, res) => {
-    res.json(customersMockData)
-})
-
-app.use("/api/customers", customerRoutes)
-
-app.get("/api/orders", (req, res) => {
-    res.json(ordersMockData)
-})
-
-app.get("/api/products", (req, res) => {
-    res.json(productssMockData)
 })
 
 // catch 404 and forward to error handler
