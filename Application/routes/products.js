@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var productsMockData = require("../mockdata/products")
-// const db = require(database stuff)
+const db = require("../config/database/db")
 
 // mock data implementation:
 /*
