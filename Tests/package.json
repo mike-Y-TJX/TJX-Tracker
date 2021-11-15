@@ -6,13 +6,19 @@
     "name": "shrer"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "gulp": "^3.9.1",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.18.0",
-    "selenium-webdriver": "^4.0.0-alpha.1",
-    "natives": "^1.1.6"
+    "natives": "^1.1.6",
+    "selenium-webdriver": "^4.0.0-alpha.1"
   },
   "scripts": {
-    "test": "node node_modules/mocha/bin/mocha --reporter mocha-junit-reporter --reporter-options mochaFile=../TestResults/TEST-RESULT.xml"
+    "test": "node node_modules/mocha/bin/mocha --reporter mocha-junit-reporter --reporter-options mochaFile=../TestResults/TEST-RESULT.xml",
+    "jestTest": "jest --coverage --watchAll"
+  },
+  "devDependencies": {
+    "jest": "^27.3.1",
+    "supertest": "^6.1.6"
   }
 }
