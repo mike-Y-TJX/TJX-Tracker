@@ -9,6 +9,7 @@ var cors = require('cors')
 var customerRoutes = require("./routes/customers")
 var orderRoutes = require("./routes/orders")
 var productRoutes = require("./routes/products")
+var db = require("mysql2")
 
 var server; 
 var app = express();
