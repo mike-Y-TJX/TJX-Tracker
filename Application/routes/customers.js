@@ -8,7 +8,7 @@ router
 		try {
 			// SQL query
 			const [rows, fields] = await db.query(
-				`SELECT * FROM customers LIMIT 1000;`
+				`SELECT * FROM Customers LIMIT 2000;`
 			);
 
 			// validate db returned results, return to user or throw error
@@ -27,27 +27,16 @@ router
 
 		// validate new customer's data fields - number, name, types
 		if (
-			newCustomer.first_name &&
 			typeof newCustomer.first_name === 'string' &&
-			newCustomer.middle_name &&
 			typeof newCustomer.middle_name === 'string' &&
-			newCustomer.last_name &&
 			typeof newCustomer.last_name === 'string' &&
-			newCustomer.phone_country_code &&
 			typeof newCustomer.phone_country_code === 'number' &&
-			newCustomer.phone &&
 			typeof newCustomer.phone === 'number' &&
-			newCustomer.email &&
 			typeof newCustomer.email === 'string' &&
-			newCustomer.customer_notes &&
 			typeof newCustomer.customer_notes === 'string' &&
-			newCustomer.street &&
 			typeof newCustomer.street === 'string' &&
-			newCustomer.city &&
 			typeof newCustomer.city === 'string' &&
-			newCustomer.zip_code &&
 			typeof newCustomer.zip_code === 'string' &&
-			newCustomer.country &&
 			typeof newCustomer.country === 'string'
 		) {
 			validCustomer = true;
@@ -59,9 +48,8 @@ router
 				await db.beginTransaction();
 
 				// INSERT the new customer into database
-				// **NOTE** have to remove customer_id fields once auto-incrementing in DB
 				const newCustomerAdded = await db.query(
-					`INSERT INTO customer
+					`INSERT INTO Customers
                     (first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
 					VALUES (?,?,?,?,?,?,?,?,?,?,?);`,
 					[
@@ -85,11 +73,11 @@ router
 				// send new customer info to user
 				res.send(newCustomer);
 			} catch (er) {
-				res.status(400).send('Not Valid');
+				res.status(400).send('Customer not added');
 			}
 		} else {
 			// customer input was not valid
-			res.status(404).send('Not Valid');
+			res.status(400).send('Not a valid customer');
 		}
 	});
 
@@ -99,7 +87,7 @@ router
 		try {
 			// SQL query
 			const [rows, fields] = await db.query(
-				`SELECT * FROM customers
+				`SELECT * FROM Customers
                 WHERE customer_id = ?;`,
 				[req.params.id]
 			);
@@ -116,12 +104,85 @@ router
 	})
 	.put(async (req, res, next) => {
 		const updatedCustomer = req.body;
+		let [rows, fields] = await db.query(
+			`SELECT first_name, middle_name, last_name, phone_country_code,
+			phone, email, customer_notes, street, city, zip_code, country
+			FROM Customers
+			WHERE customer_id = ?;`,
+			[req.params.id]
+		);
+		console.log('rows');
+		console.log(rows);
+
+		let originalCustomer = {
+			first_name: rows[0].first_name,
+			middle_name: rows[0].middle_name,
+			last_name: rows[0].last_name,
+			phone_country_code: rows[0].phone_country_code,
+			phone: rows[0].phone,
+			email: rows[0].email,
+			customer_notes: rows[0].customer_notes,
+			street: rows[0].street,
+			city: rows[0].city,
+			zip_code: rows[0].zip_code,
+			country: rows[0].country,
+		};
+
+		// let originalCustomer = {
+		// 	first_name: await db.query(
+		// 		`SELECT first_name FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		// 	middle_name: rows[0].middle_name,
+		// 	last_name: await db.query(
+		// 		`SELECT last_name FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		// 	phone_country_code: await db.query(
+		// 		`SELECT phone_country_code FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		// 	phone: await db.query(
+		// 		`SELECT phone FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		// 	email: await db.query(
+		// 		`SELECT email FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		// 	customer_notes: await db.query(
+		// 		`SELECT customer_notes FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		// 	street: await db.query(
+		// 		`SELECT street FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		// 	city: await db.query(
+		// 		`SELECT city FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		// 	zip_code: await db.query(
+		// 		`SELECT zip_code FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		// 	country: await db.query(
+		// 		`SELECT country FROM Customers WHERE customer_id = ?;`,
+		// 		[req.params.id]
+		// 	),
+		//};
+
+		console.log('original before assign:');
+		console.log(originalCustomer);
+		const finalCustomer = Object.assign(originalCustomer, updatedCustomer);
+		console.log('final after assign:');
+		console.log(finalCustomer);
 
 		try {
 			await db.beginTransaction();
 
 			const existingCustomerUpdated = await db.query(
-				`UPDATE customer SET
+				`UPDATE Customers SET
                 first_name = ?,
                 middle_name = ?,
                 last_name = ?,
@@ -135,17 +196,17 @@ router
                 country = ?
                 WHERE customer_id = ?;`,
 				[
-					updatedCustomer.first_name,
-					updatedCustomer.middle_name,
-					updatedCustomer.last_name,
-					updatedCustomer.phone_country_code,
-					updatedCustomer.phone,
-					updatedCustomer.email,
-					updatedCustomer.customer_notes,
-					updatedCustomer.street,
-					updatedCustomer.city,
-					updatedCustomer.zip_code,
-					updatedCustomer.country,
+					finalCustomer.first_name,
+					finalCustomer.middle_name,
+					finalCustomer.last_name,
+					finalCustomer.phone_country_code,
+					finalCustomer.phone,
+					finalCustomer.email,
+					finalCustomer.customer_notes,
+					finalCustomer.street,
+					finalCustomer.city,
+					finalCustomer.zip_code,
+					finalCustomer.country,
 					req.params.id,
 				]
 			);
@@ -154,7 +215,7 @@ router
 
 			// validate database was updated
 			if (existingCustomerUpdated[0].affectedRows > 0) {
-				res.json(updatedCustomer);
+				res.json(finalCustomer);
 			} else {
 				throw new Error('Customer not updated');
 			}
@@ -167,7 +228,7 @@ router
 			await db.beginTransaction();
 
 			const existingCustomerDeleted = await db.query(
-				`DELETE FROM customers
+				`DELETE FROM Customers
                 WHERE customer_id = ?;`,
 				[req.params.id]
 			);
