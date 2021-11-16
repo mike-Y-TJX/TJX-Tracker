@@ -63,7 +63,7 @@ router
 
 			const existingOrderDeleted = await db.query(
 				`DELETE FROM orders
-                WHERE order_id = ?;`,
+                WHERE order_id = ? AND order_status_code = 'Draft';`,
 				[req.params.id]
 			);
 
