@@ -1,5 +1,4 @@
 ﻿'use strict';
-var dotenv = require("dotenv").config()
 var debug = require('debug');
 var express = require('express');
 var path = require('path');
@@ -9,8 +8,7 @@ var bodyParser = require('body-parser');
 var cors = require('cors')
 var customerRoutes = require("./routes/customers")
 var orderRoutes = require("./routes/orders")
-var productRoutes = require("./routes/products");
-const { builtinModules } = require("module");
+var productRoutes = require("./routes/products")
 
 var server; 
 var app = express();
@@ -81,5 +79,3 @@ exports.close = function () {
 }
 
 this.listen();
-
-module.exports = app;
