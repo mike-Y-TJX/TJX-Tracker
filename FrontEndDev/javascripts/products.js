@@ -1,9 +1,18 @@
-let url = 
+let url = "http://tjx-tracker.azurewebsites.net/api/products";
 
-document.querySelector(".submit-button").addEventListener("submit", function () {
-	
+document.querySelector(".submit-button").addEventListener("click", function () {
+	let product = newProductData();
+	let newProduct = generateRows(product);
+	document.getElementById("products-body").append(...newProduct);
+	document.querySelector("table").hidden = false;
 })
 
+axios.get(url).then(({data}) => {
+
+	let productEntry = generateRows(data.products);
+	document.getElementById("products-body").replaceChildren(...productEntry);
+	document.querySelector("table").hidden = false;
+});
 /*function newProductData(){
 	let formData = document.querySelector("form")
 	let addProducts = new FormData(formData);
@@ -36,15 +45,19 @@ function generateRows(products){
 
 	let rows = products.map((product) => {
 		let row = document.createElement('tr');
-		row.insertAdjacentHTML('beforeend', 
+		row.insertAdjacentHTML('beforeend', `
 		<td>${product.product_id}</td>
-		
-		
-		)
+		<td>${product.product_SKU}</td>
+		<td>${product.product_price}</td>
+		<td>${product.product_name}</td>
+		<td>${product.product_quantity}</td>
+		<td>${product.product_description}</td>
+		`
+		);
+		return row;
 
-	})
-
-
+	});
+	return rows;
 }
 
 
