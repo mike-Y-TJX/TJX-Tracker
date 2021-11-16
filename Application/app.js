@@ -10,11 +10,12 @@ var customerRoutes = require("./routes/customers")
 var orderRoutes = require("./routes/orders")
 var productRoutes = require("./routes/products")
 var mysql = require("mysql")
+var router = express.Router();
 
 var server; 
 var app = express();
 
-var connection = mysql.createConnection({
+ var connection = mysql.createConnection({
     host     : 'tjx-tracker-db.mysql.database.azure.com',
     user     : 'adminuser@tjx-tracker-db',
     password : 'ILoveTJX$2021',
@@ -22,6 +23,14 @@ var connection = mysql.createConnection({
   });
 
   connection.connect();
+
+
+
+app.get("/api/customers", (req, res) => {
+    connection.query('SELECT * FROM customers', function (error, results, fields) {
+        res.json(results)
+      });
+})
 
 
 
@@ -37,7 +46,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/api/customers", customerRoutes)
+// app.use("/api/customers", customerRoutes)
 app.use("/api/orders", orderRoutes)
 app.use("/api/products", productRoutes)
 
