@@ -1,19 +1,13 @@
 var express = require('express');
 var router = express.Router();
-var productsMockData = require("../mockdata/products")
-const db = require("../config/database/db")
-
-// mock data implementation:
-/*
-router.route('/').get((req, res, next) => {
-    res.json(productsMockData)
-})
-*/
+const db = require('../config/database/db');
 
 router.route('/').get(async (req, res, next) => {
 	try {
 		//SQL query
-		const [rows, fields] = await db.query(`SELECT * FROM products;`);
+		const [rows, fields] = await db.query(
+			`SELECT * FROM products LIMIT 1000;`
+		);
 
 		// validate db returned resutls, return to user or throw error
 		if (rows && rows.length > 0) {
@@ -56,7 +50,7 @@ router
 			const existingProductUpdated = await db.query(
 				`UPDATE product SET
                 product_SKU = ?,
-		product_price = ?,
+				product_price = ?,
                 product_name = ?,
                 product_quantity = ?,
                 product_description = ?,
