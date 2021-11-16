@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var productsMockData = require("../mockdata/products")
-// const db = require(database stuff)
+const db = require("../config/database/db")
 
 // mock data implementation:
 /*
@@ -13,7 +13,7 @@ router.route('/').get((req, res, next) => {
 router.route('/').get(async (req, res, next) => {
 	try {
 		//SQL query
-		const [rows, fields] = await db.query(`SELECT * FROM product;`);
+		const [rows, fields] = await db.query(`SELECT * FROM products;`);
 
 		// validate db returned resutls, return to user or throw error
 		if (rows && rows.length > 0) {
@@ -22,7 +22,7 @@ router.route('/').get(async (req, res, next) => {
 			throw new Error('No products found');
 		}
 	} catch (er) {
-		res.status(400).send(er);
+		res.status(400).send('No products found');
 	}
 });
 
@@ -32,7 +32,7 @@ router
 		try {
 			// SQL query
 			const [rows, fields] = await db.query(
-				`SELECT * FROM product
+				`SELECT * FROM products
                 WHERE product_sku = ?;`,
 				[req.params.id]
 			);
@@ -44,7 +44,7 @@ router
 				throw new Error('No product found');
 			}
 		} catch (er) {
-			res.status(400).send('Product not found');
+			res.status(400).send('No product found');
 		}
 	})
 	.put(async (req, res, next) => {
@@ -80,7 +80,7 @@ router
 				throw new Error('Product not updated');
 			}
 		} catch (er) {
-			res.status(400).send(er);
+			res.status(400).send('Product not updated');
 		}
 	});
 

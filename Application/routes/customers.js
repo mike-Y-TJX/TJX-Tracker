@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var customersMockData = require('../mockdata/customers');
-// const db = require(database stuff)
+const db = require("../config/database/db")
 
 // Mock data implementation:
 /*
@@ -25,7 +25,7 @@ router
 	.get(async (req, res, next) => {
 		try {
 			// SQL query
-			const [rows, fields] = await db.query(`SELECT * FROM customer;`);
+			const [rows, fields] = await db.query(`SELECT * FROM customers;`);
 
 			// validate db returned results, return to user or throw error
 			if (rows && rows.length > 0) {
@@ -34,7 +34,7 @@ router
 				throw new Error('No customers found');
 			}
 		} catch (er) {
-			res.status(400).send(er);
+			res.status(400).send('No customers found');
 		}
 	})
 	.post(async (req, res, next) => {
@@ -102,11 +102,11 @@ router
 				// send new customer info to user
 				res.send(newCustomer);
 			} catch (er) {
-				res.status(400).send(er);
+				res.status(400).send("Not Valid");
 			}
 		} else {
 			// customer input was not valid
-			res.status(404).send();
+			res.status(404).send("Not Valid");
 		}
 	});
 
@@ -116,7 +116,7 @@ router
 		try {
 			// SQL query
 			const [rows, fields] = await db.query(
-				`SELECT * FROM customer
+				`SELECT * FROM customers
                 WHERE customer_id = ?;`,
 				[req.params.id]
 			);
@@ -128,7 +128,7 @@ router
 				throw new Error('No customer found');
 			}
 		} catch (er) {
-			res.status(400).send('Customer not found');
+			res.status(400).send('No customer found');
 		}
 	})
 	.put(async (req, res, next) => {
@@ -176,7 +176,7 @@ router
 				throw new Error('Customer not updated');
 			}
 		} catch (er) {
-			res.status(400).send(er);
+			res.status(400).send('Customer not updated');
 		}
 	})
 	.delete(async (req, res, next) => {
@@ -184,7 +184,7 @@ router
 			await db.beginTransaction();
 
 			const existingCustomerDeleted = await db.query(
-				`DELETE FROM customer
+				`DELETE FROM customers
                 WHERE customer_id = ?;`,
 				[req.params.id]
 			);
