@@ -14,6 +14,17 @@ var mysql = require("mysql")
 var server; 
 var app = express();
 
+var connection = mysql.createConnection({
+    host     : 'tjx-tracker-db.mysql.database.azure.com',
+    user     : 'adminuser@tjx-tracker-db',
+    password : 'ILoveTJX$2021',
+    database : 'stores_selling'
+  });
+
+  connection.connect();
+
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
