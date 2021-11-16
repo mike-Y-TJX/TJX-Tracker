@@ -36,9 +36,13 @@ function generateRows(customers) {
   return rows;
 }
 
+/**
+ * 
+ * @param {*} id if the data of an existing customer is modified and id can be supliied
+ * @returns an array with the customer data 
+ */
 function getNewCustomerData(id) {
-  
-  // If no Id was supplied then we now that a new user is created 
+  // If no Id was supplied then we now that a new user is created
   // If Id is supllied an existing user is modified
   if (id === undefined) id = 0;
 
@@ -67,17 +71,17 @@ axios
   });
 
 $("#addButton").on("click", () => {
-  if ($(".needs-validation")[0].checkValidity()){
+  if ($(".needs-validation")[0].checkValidity()) {
     $(".needs-validation").submit((e) => {
       e.preventDefault();
-    })
+    });
     let customer = getNewCustomerData(customerId);
     console.log(customer);
     let customerRow = generateRows(customer);
     document.getElementById("tableBody").append(...customerRow);
   }
 });
-
+// Reset all fields when the reset button is clicked 
 $("#resetButton").on("click", () => {
   $("#validationCustom01").val("");
   $("#validationCustom02").val("");
@@ -92,7 +96,8 @@ $("#resetButton").on("click", () => {
 // When a row on the customer table is clicked get the id and populate the fields
 $("#tableBody").on("click", function (e) {
   console.log("Clicked");
-
+  // Show the fields when an item on the table is cliked
+  $("#collapseCustomer").collapse();
   // Get the row that was clicked and place the information from the table in the fields
   $(e.target)
     .closest("tr")
@@ -110,4 +115,14 @@ $("#tableBody").on("click", function (e) {
         $(htmlId).val(element.innerHTML);
       }
     });
+});
+
+// When the collapse is shown change the name of the button
+$("#collapseCustomer").on("show.bs.collapse", function () {
+  $("#colapseButton").html("Click here to hide form");
+});
+
+// When the collapse is hidden change the name of the button to the default one
+$("#collapseCustomer").on("hide.bs.collapse", function () {
+  $("#colapseButton").html("Click here to add a new customer");
 });
