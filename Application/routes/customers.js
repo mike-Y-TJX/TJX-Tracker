@@ -1,31 +1,15 @@
 var express = require('express');
 var router = express.Router();
-var customersMockData = require('../mockdata/customers');
 const db = require('../config/database/db');
-
-// Mock data implementation:
-/*
-router
-.route('/')
-
-.get((req, res, next) => {
-    res.json(customersMockData)
-})
-*/
-
-// function implementation":
-/*
-modle.exports = function (db) {
-    router.route()....
-}
-*/
 
 router
 	.route('/')
 	.get(async (req, res, next) => {
 		try {
 			// SQL query
-			const [rows, fields] = await db.query(`SELECT * FROM customers;`);
+			const [rows, fields] = await db.query(
+				`SELECT * FROM customers LIMIT 1000;`
+			);
 
 			// validate db returned results, return to user or throw error
 			if (rows && rows.length > 0) {
@@ -78,10 +62,9 @@ router
 				// **NOTE** have to remove customer_id fields once auto-incrementing in DB
 				const newCustomerAdded = await db.query(
 					`INSERT INTO customer
-                    (customer_id, first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
-					VALUES (?,?,?,?,?,?,?,?,?,?,?,?);`,
+                    (first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?);`,
 					[
-						newCustomer.customer_id,
 						newCustomer.first_name,
 						newCustomer.middle_name,
 						newCustomer.last_name,

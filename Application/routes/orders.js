@@ -1,32 +1,25 @@
 ﻿'use strict';
 var express = require('express');
 var router = express.Router();
-var ordersMockData = require("../mockdata/orders")
-const db = require("../config/database/db")
-
-// mock data implementation:
-/*
-// GET users listing.
-router.get('/', function (req, res) {
-    res.json(ordersMockData);
-});
-*/
+const db = require('../config/database/db');
 
 router
 	.route('/')
 	.get(async (req, res, next) => {
 		try {
 			// SQL query
-			const [rows, fields] = await db.query(`SELECT * FROM orders;`);
+			const [rows, fields] = await db.query(
+				`SELECT * FROM orders LIMIT 1000;`
+			);
 
 			// validate db returned results, return to user or throw error
 			if (rows && rows.length > 0) {
 				res.json(rows);
 			} else {
-				throw new Error('No Orders Found');
+				throw new Error('No orders found');
 			}
 		} catch (er) {
-			res.status(400).send('No Orders Found');
+			res.status(400).send('No orders found');
 		}
 	})
 	.post(async (req, res, next) => {
@@ -48,10 +41,10 @@ router
 			if (rows && rows.length > 0) {
 				res.json(rows);
 			} else {
-				throw new Error('No Order Found');
+				throw new Error('No order found');
 			}
 		} catch (er) {
-			res.status(400).send('No Order Found');
+			res.status(400).send('No order found');
 		}
 	})
 	.put(async (req, res, next) => {
@@ -80,10 +73,10 @@ router
 			if (existingOrderDeleted[0].affectedRows > 0) {
 				res.send('Successfully deleted order');
 			} else {
-				throw new Error('Order Not Deleted');
+				throw new Error('Order not deleted');
 			}
 		} catch (er) {
-			res.status(400).send('Order Not Deleted');
+			res.status(400).send('Order not deleted');
 		}
 	});
 
