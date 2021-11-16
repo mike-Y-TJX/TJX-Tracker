@@ -1,10 +1,20 @@
 let url = "http://tjx-tracker.azurewebsites.net/api/products";
 
 document.querySelector(".submit-button").addEventListener("click", function () {
-	let product = newProductData();
+	/*let product = newProductData();
 	let newProduct = generateRows(product);
 	document.getElementById("products-body").append(...newProduct);
-	document.querySelector("table").hidden = false;
+	document.querySelector("table").hidden = false;*/
+
+	let zone = document.createElement("div");
+	zone.classList.add("box", "zone");
+	zone.setAttribute("id", "newProduct");
+	document.getElementById("newDiv").appendChild(zone);
+
+	let img = document.createElement("img");
+	img.src = "../Order Tracker logo.png";
+	img.setAttribute("alt", "Product");
+	document.getElementById("newProduct").appendChild(img);
 })
 
 axios.get(url).then(({data}) => {
@@ -13,20 +23,6 @@ axios.get(url).then(({data}) => {
 	document.getElementById("products-body").replaceChildren(...productEntry);
 	document.querySelector("table").hidden = false;
 });
-/*function newProductData(){
-	let formData = document.querySelector("form")
-	let addProducts = new FormData(formData);
-	axios.post('../../Application/mockdata/products.js', {
-		productID: addProducts.get("productID"),
-		productName: addProducts.get("productname"),
-		skuNumber: addProducts.get("SKUNumber"),
-		productQuantity: addProducts.get("productQuantity"),
-		productDescription: addProducts.get("productDescription")
-	}).then((response) => {
-		let insertedProduct = response.data;
-
-	})
-}*/
 
 function newProductData() {
 	let newProduct = {
@@ -70,3 +66,12 @@ function dropdownmenuSet(val){
 		$('#dropdownMenuButton1').html('Search using:');
 	}
 }
+
+$("#collapseProduct").on("show.bs.collapse", function () {
+	$("#collapseButton").html("Click here to hide form");
+  });
+
+$("#collapseProduct").on("hide.bs.collapse", function () {
+	$("#collapseButton").html("Click here to add a new product");
+  });
+  
