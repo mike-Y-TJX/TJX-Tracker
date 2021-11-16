@@ -97,7 +97,7 @@ $("#resetButton").on("click", () => {
 $("#tableBody").on("click", function (e) {
   console.log("Clicked");
   // Show the fields when an item on the table is cliked
-  $("#collapseCustomer").collapse();
+  $("#collapseCustomer").collapse('show');
   // Get the row that was clicked and place the information from the table in the fields
   $(e.target)
     .closest("tr")
