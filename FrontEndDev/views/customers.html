@@ -118,16 +118,12 @@
                     placeholder="Last Name"
                     required
                   />
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="validationCustom04">Phone</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="validationCustom04"
-                    placeholder="Phone"
-                    required
-                  />
+                  <label for="phone">Phone</label>
+                  <div class="input-group mb-3" id="phone">
+                    <input type="tel" class="form-control" placeholder="Prefix" id="validationCustom04" required>
+                    <span class="input-group-text"></span>
+                    <input type="tel" class="form-control" placeholder="Number" id="validationCustom05">
+                  </div>
                   <label for="validationCustom05">Email</label>
                   <input
                     type="text"
@@ -136,14 +132,38 @@
                     placeholder="Email"
                     required
                   />
-                  <!-- <div class="invalid-feedback">
-              Please provide a valid quantity. -->
-                  <label for="validationCustom06">Adress</label>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="validationCustom06">Street</label>
                   <input
                     type="text"
                     class="form-control"
                     id="validationCustom06"
-                    placeholder="Adress"
+                    placeholder="Street"
+                    required
+                  />
+                  <label for="validationCustom07">City</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="validationCustom07"
+                    placeholder="City"
+                    required
+                  />
+                  <label for="validationCustom08">ZipCode</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="validationCustom08"
+                    placeholder="ZipCode"
+                    required
+                  />
+                  <label for="validationCustom09">Country</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="validationCustom09"
+                    placeholder="Country"
                     required
                   />
                 </div>

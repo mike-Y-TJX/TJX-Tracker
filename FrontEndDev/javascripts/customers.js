@@ -117,6 +117,10 @@ $("#tableBody").on("click", function (e) {
     });
 });
 
+
+
+
+
 // When the collapse is shown change the name of the button
 $("#collapseCustomer").on("show.bs.collapse", function () {
   $("#colapseButton").html("Click here to hide form");
