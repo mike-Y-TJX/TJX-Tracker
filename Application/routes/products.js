@@ -33,7 +33,7 @@ router
 			// SQL query
 			const [rows, fields] = await db.query(
 				`SELECT * FROM products
-                WHERE product_sku = ?;`,
+                WHERE product_id = ?;`,
 				[req.params.id]
 			);
 
@@ -55,13 +55,15 @@ router
 
 			const existingProductUpdated = await db.query(
 				`UPDATE product SET
-                product_price = ?,
+                product_SKU = ?,
+		product_price = ?,
                 product_name = ?,
                 product_quantity = ?,
                 product_description = ?,
                 image_url = ?
-                WHERE product_sku = ?;`,
+                WHERE product_id = ?;`,
 				[
+					updatedProduct.product_SKU,
 					updatedProduct.product_price,
 					updatedProduct.product_name,
 					updatedProduct.product_quantity,
