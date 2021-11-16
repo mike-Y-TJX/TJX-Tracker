@@ -9,10 +9,11 @@ var cors = require('cors')
 var customerRoutes = require("./routes/customers")
 var orderRoutes = require("./routes/orders")
 var productRoutes = require("./routes/products")
-var db = require("mysql2")
+var mysql = require("mysql")
 
 var server; 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
