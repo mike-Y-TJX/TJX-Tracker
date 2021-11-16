@@ -130,7 +130,17 @@ p {
     font-weight: bold;
     font-size: 26px;
 }
-  
+
+h5{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color:rgb(0, 0, 0);
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-style: oblique;
+    text-align: center;
+}
+
   label{
     padding-top: 1em;
     font-family: 'Ubuntu', sans-serif;
@@ -142,7 +152,7 @@ p {
       justify-content: flex-end;
   }
 
-  .submit-button, .reset-button, .add_button{
+  .submit-button, .reset-button, .add_button, .learnMore{
     cursor: pointer;
     border-radius: 5em;
     padding-left: 40px;
@@ -159,11 +169,33 @@ p {
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
   }
 
+  .order-button,.close-button{
+    cursor: pointer;
+    border-radius: 5em;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin: 5px;
+    border: 0;
+    background: rgb(67,66,65);
+    color: white;
+    font-weight: bold;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 20px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+  }
   .submit-button:hover, .reset-button:hover, 
   #search-button:hover, #inputGroupFileAddon04:hover, 
-  .add_button:hover{
+  .add_button:hover, .learnMore:hover{
     background: hsl(40, 68%, 94%);
     color: #000000;
+    border: 2px solid black;
+}
+
+.order-button:hover, .close-button:hover{
+    background:rgb(0, 55, 100);
+    color: #fff8f8;
     border: 2px solid black;
 }
 
@@ -176,13 +208,17 @@ p {
 
 }
 
+#modal-bod>img{
+    margin-left: 3em;
+}
+
 .buttons{
     display: flex;
     justify-content: right;
     padding: 5px;
 }
 
-#sbar, .input-group-text{
+#sbar, .input-group-text, .modal-body{
     font-family: 'Ubuntu', sans-serif;
 }
 @media (max-width: 600px) {
@@ -201,8 +237,7 @@ p {
 }
 
 .zone {
-    /*padding:30px 50px;*/
-    /*margin:40px 60px;*/
+    
     cursor:pointer;
     display:inline-block;
     color:#FFF;
@@ -225,9 +260,10 @@ p {
 .box{
     grid-column: span 3;
     grid-row: 100%;
-    background-color: rgb(73, 69, 69);
+    background-color:rgb(211,204,189);
     padding: 20px;
     margin: 30px;
+    width: 250px;
     
 }
 
