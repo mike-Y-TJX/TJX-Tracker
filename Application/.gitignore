@@ -45,6 +45,12 @@ TestResult.xml
 [Rr]eleasePS/
 dlldata.c
 
+# dotenv environment variables file
+.env
+.env.test
+.env.production
+
+
 # DNX
 project.lock.json
 project.fragment.lock.json
