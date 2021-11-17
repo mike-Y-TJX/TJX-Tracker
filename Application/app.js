@@ -39,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use("/api/orders", orderRoutes)
 // app.use("/api/products", productRoutes)
 
+// =================CUSTOMERS=================
 app.get("/api/customers", (req, res) => {
     db.query(
         `SELECT * FROM Customers LIMIT 2000;`,
@@ -138,8 +139,9 @@ app.delete("/api/customers/:id", (req, res) => {
         }
     )
 })
+// =================CUSTOMERS=================
 
-
+// =================PRODUCTS=================
 app.get("/api/products", (req, res) => {
 	db.query(
 		`SELECT * FROM Products LIMIT 1000;`,
@@ -167,6 +169,118 @@ app.get("/api/products/:id", (req, res) => {
     )
 })
 
+
+app.get("/api/products/:id", (req, res) => {
+    db.query(
+        `DELETE FROM Products
+        WHERE product_id = ?;`,
+        [req.params.id],
+        (error, results, fields) => {
+            var results = Object.assign({}, results);
+            if(results.affectedRows == 0 || error){
+                return res.status(400).send('Product not deleted')
+            } else {
+                res.send('Successfully Deleted Product');
+            }
+        }
+    )
+})
+
+
+// =================PRODUCTS=================
+
+// =================ORDERS=================
+
+app.get("/api/orders", (req, res) => {
+    db.query(
+        `SELECT 
+        o.order_id, o.order_notes, o.datetime_order_placed,
+        od.quantity_purchased, 
+        os.status_desc, 
+        p.product_id, p.product_sku, p.product_price, p.product_name, p.product_quantity, p.product_description, p.image_url, 
+        c.first_name, c.middle_name, c.last_name, c.phone_country_code, c.phone,email, c.customer_notes, c.street, c.city, c.zip_code, c.country
+        FROM orders o
+        INNER JOIN 
+        order_detail od
+        ON
+        o.order_id = od.order_id
+        INNER JOIN 
+        order_status os
+        ON
+        o.order_status = os.status_id
+        INNER JOIN 
+        customers c 
+        ON
+        c.customer_id = o.customer_id
+        INNER JOIN 
+        products p
+        ON
+        p.product_id = od.product_id
+        ;`,
+        (error, results, fields) => {
+            let orderData = []
+            let processedOrders = {}
+
+            results.forEach(order => {
+                if (!processedOrders[order.order_id]){
+                    processedOrders[order.order_id] = [order.detail_id];
+                    orderData.push({
+                        order_id: order.order_id,
+                        order_notes: order.order_notes,
+                        datetime_order_placed: order.datetime_order_placed,
+                        status_desc: order.status_desc,
+                        customer_detail: {
+                            first_name: order.first_name,
+                            middle_name: order.middle_name,
+                            last_name: order.last_name,
+                            phone_country_code: order.phone_country_code,
+                            phone: order.phone,
+                            email: order.email,
+                            customer_notes: order.customer_notes,
+                            street: order.street,
+                            city: order.city,
+                            zip_code: order.zip_code,
+                            country: order.country,
+                        },
+                        order_detail:[
+                            {
+                                quantity_purchased: order.quantity_purchased,
+                                product_id: order.product_id, 
+                                product_sku: order.product_sku, 
+                                product_price: order.product_price, 
+                                product_name: order.product_name, 
+                                product_quantity: order.product_quantity, 
+                                product_description: order.product_description, 
+                                image_url: order.image_url,
+                            }
+                        ]
+
+                    })
+                } else {
+                    let orderIndex = orderData.findIndex((orders) => {
+                        return orders.order_id === order.order_id
+                    })
+                    orderData[orderIndex].order_detail.push(
+                        {
+                            quantity_purchased: order.quantity_purchased,
+                            product_id: order.product_id, 
+                            product_sku: order.product_sku, 
+                            product_price: order.product_price, 
+                            product_name: order.product_name, 
+                            product_quantity: order.product_quantity, 
+                            product_description: order.product_description, 
+                            image_url: order.image_url,
+                        }
+                    )
+                }
+            });
+
+            res.json(orderData)	
+        }
+    )
+})
+
+// =================ORDERS=================
 
 app.get("/", (req, res) => {
     res.render("index")
