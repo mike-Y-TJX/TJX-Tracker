@@ -1,4 +1,11 @@
 let customerId = undefined;
+// Using axios make a call to the API and get the customers information and render it in the table
+// NOTE: after first deployement of the backEnd server URI can be changed to the public one
+axios.get("http://localhost:3000/api/customers").then(({ data }) => {
+  let customerRows = generateRows(data);
+  console.log(data);
+  document.getElementById("tableBody").replaceChildren(...customerRows);
+});
 
 function dropdownmenuSet(val) {
   if (val.innerHTML != "") {
@@ -10,6 +17,7 @@ function dropdownmenuSet(val) {
   }
 }
 
+
 /**
  * This function takes a json object containing information about a customer and trasforms it into HTML rows
  * @param  customers  , a json object containing information about customers
@@ -17,7 +25,14 @@ function dropdownmenuSet(val) {
  */
 function generateRows(customers) {
   let rows = customers.map((customer) => {
-    let adress = customer.street + ";" + customer.city + ";" + customer.zip_code + ";" + customer.country;
+    let adress =
+      customer.street +
+      ";" +
+      customer.city +
+      ";" +
+      customer.zip_code +
+      ";" +
+      customer.country;
     let row = document.createElement("tr");
     row.insertAdjacentHTML(
       "beforeend",
@@ -26,7 +41,7 @@ function generateRows(customers) {
       <td>${customer.first_name}</td>
       <td>${customer.middle_name}</td>
       <td>${customer.last_name}</td>
-      <td>${customer.phone_country_code}</td>
+      <td class="prefix">${customer.phone_country_code}</td>
       <td>${customer.phone}</td>
       <td>${customer.email}</td>
       <td class="ellipsis">${customer.customer_notes}</td>
@@ -39,9 +54,9 @@ function generateRows(customers) {
 }
 
 /**
- * 
+ *
  * @param {*} id if the data of an existing customer is modified and id can be supliied
- * @returns an array with the customer data 
+ * @returns an array with the customer data
  */
 function getNewCustomerData(id) {
   // If no Id was supplied then we now that a new user is created
@@ -51,67 +66,79 @@ function getNewCustomerData(id) {
   let customer = {
     customer_id: id,
     first_name: $("#validationCustom01").val(),
+    middle_name: $("#validationCustom02").val(),
     last_name: $("#validationCustom03").val(),
-    phone: $("#validationCustom04").val(),
-    email: $("#validationCustom05").val(),
+    phone_country_code: Number($("#validationCustom04").val()),
+    phone:Number($("#validationCustom05").val()),
+    email: $("#validationCustom06").val(),
     customer_notes: $("#FormControlTextarea1").val(),
-    address: $("#validationCustom06").val(),
+    street: $("#validationCustom07").val(),
+    city: $("#validationCustom08").val(),
+    zip_code: $("#validationCustom09").val(),
+    country: $("#validationCustom10").val(),
   };
 
-  let arrayCustomer = [customer];
-  return arrayCustomer;
+  
+  return customer;
 }
-
-// Using axios make a call to the API and get the customers information and render it in the table
-// NOTE: after first deployement of the backEnd server URI can be changed to the public one
-axios
-  .get("http://localhost:3000/api/customers")
-  .then(({ data }) => {
-    let customerRows = generateRows(data);
-    console.log(data);
-    document.getElementById("tableBody").replaceChildren(...customerRows);
-  });
 
 $("#addButton").on("click", () => {
   if ($(".needs-validation")[0].checkValidity()) {
     $(".needs-validation").submit((e) => {
       e.preventDefault();
     });
-    let customer = getNewCustomerData(customerId);
-    console.log(customer);
-    let customerRow = generateRows(customer);
-    document.getElementById("tableBody").append(...customerRow);
+
+    // let customer = getNewCustomerData(customerId);
+    // if (customer.customer_id === 0){
+    //   customer.customer_id = 1002;
+    //   console.log(customer);
+    //   axios.post("http://localhost:3000/api/customers",customer).then((res) => {
+    //     console.log(res);
+    //   },(err) => {
+    //     console.log(err);
+    //   });
+    // }
+    // else{
+
+    // }
+    // let customerRow = generateRows(customer);
+    // document.getElementById("tableBody").append(...customerRow);
   }
 });
-// Reset all fields when the reset button is clicked 
-$("#resetButton").on("click", () => {
-  $("#validationCustom01").val("");
-  $("#validationCustom02").val("");
-  $("#validationCustom03").val("");
-  $("#validationCustom04").val("");
-  $("#validationCustom05").val("");
-  $("#validationCustom06").val("");
-  $("#FormControlTextarea1").val("");
-  customerId = undefined;
-});
+
 
 // When a row on the customer table is clicked get the id and populate the fields
 $("#tableBody").on("click", function (e) {
   console.log("Clicked");
   // Show the fields when an item on the table is cliked
-  $("#collapseCustomer").collapse('show');
+  $("#collapseCustomer").collapse("show");
   // Get the row that was clicked and place the information from the table in the fields
   $(e.target)
     .closest("tr")
     .children()
     .each((index, element) => {
-      console.log(index + "" + element.innerHTML);
+      // Populate all fields with the current information 
       if (index === 0) {
         customerId = element.innerHTML;
-      } else if (index === 6) {
-        $("#FormControlTextarea1").val(element.innerHTML);
       } else if (index === 7) {
-        $("#validationCustom06").val(element.innerHTML);
+        $("#FormControlTextarea1").val(element.innerHTML);
+      } else if (index === 8) {
+        let adress = element.innerHTML;
+        index -= 1;
+        while (adress.indexOf(";") !== -1) {
+          let val = adress.substring(0, adress.indexOf(";") - 1);
+          adress = adress.substring(adress.indexOf(";") + 1, adress.length + 1);
+
+          if (index === 9) {
+            let htmlId = "#validationCustom0" + String(index);
+            $(htmlId).val(val);
+            $("#validationCustom10").val(adress);
+          } else {
+            let htmlId = "#validationCustom0" + String(index);
+            $(htmlId).val(val);
+          }
+          index += 1;
+        }
       } else {
         let htmlId = "#validationCustom0" + String(index);
         $(htmlId).val(element.innerHTML);
@@ -119,16 +146,73 @@ $("#tableBody").on("click", function (e) {
     });
 });
 
-
-
-
+$("#search-button").on("click" , () => {
+  let searchOption = $("#dropdownMenuButton1").val();
+  if (searchOption) {
+    switch (searchOption){
+      case "First Name":
+        searchOption = "first_name";
+        break;
+      case "Last Name":
+        searchOption = "last_name";
+        break;
+      case "Phone":
+        searchOption = "phone";
+        break;
+      case "Email":
+        searchOption = "email";
+        break;
+    }
+    console.log(searchOption);
+    let searchTerm = $("#searchInput").val();
+    if (searchTerm){
+      let goodElements = [];
+      if (searchOption !== "phone"){
+        searchTerm = searchTerm.toLowerCase();
+      }
+      axios.get("http://localhost:3000/api/customers").then(({ data }) => {
+      data.forEach(element => {
+        if (searchOption !== "phone"){
+          if (element[searchOption].toLowerCase().indexOf(searchTerm) !== -1){
+            goodElements.push(element);
+          }}
+        else {
+          if (element[searchOption].toString().indexOf(searchTerm) !== -1){
+            goodElements.push(element);
+          }
+        }
+      });  
+      let customerRows = generateRows(goodElements);
+      console.log(goodElements);
+      document.getElementById("tableBody").replaceChildren(...customerRows);
+});
+    }
+  }
+});
 
 // When the collapse is shown change the name of the button
 $("#collapseCustomer").on("show.bs.collapse", function () {
   $("#colapseButton").html("Click here to hide form");
 });
 
+
 // When the collapse is hidden change the name of the button to the default one
 $("#collapseCustomer").on("hide.bs.collapse", function () {
   $("#colapseButton").html("Click here to add a new customer");
+});
+
+// Reset all fields when the reset button is clicked
+$("#resetButton").on("click", () => {
+  $("#validationCustom01").val("");
+  $("#validationCustom02").val("");
+  $("#validationCustom03").val("");
+  $("#validationCustom04").val("");
+  $("#validationCustom05").val("");
+  $("#validationCustom06").val("");
+  $("#validationCustom07").val("");
+  $("#validationCustom08").val("");
+  $("#validationCustom09").val("");
+  $("#validationCustom10").val("");
+  $("#FormControlTextarea1").val("");
+  customerId = undefined;
 });

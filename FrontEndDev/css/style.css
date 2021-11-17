@@ -199,6 +199,9 @@ p {
     overflow: hidden;
     white-space: nowrap;
 }
+.prefix{
+    width: 40px;
+}
 
 .zone {
     /*padding:30px 50px;*/
