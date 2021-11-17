@@ -2,7 +2,7 @@ var request = require('supertest');
 //const app = require('../../Application/app');
 //const screen = require('@testing-library/jest-dom');
 
-request = request('http://localhost:3000');
+request = request('https://tjx-tracker.azurewebsites.net/');
 
 
 describe('CUSTOMERS', () => {
@@ -30,7 +30,7 @@ describe('CUSTOMERS', () => {
             const response = await request
                 .post("/api/customers")
                 .send({
-                    "customer_id": 1004,
+                   
                     "first_name": "testuser",
                     "middle_name": "D",
                     "last_name": "Luffy",
@@ -91,7 +91,7 @@ describe('CUSTOMERS', () => {
             expect(response.body.customer_id).toBeDefined()
 
         })
-        test('should respond with a status code of 404', async () => {
+        test('should respond with a status code of 400 for invalid post', async () => {
 
             const bodyData = [
                 { "customer_id": 1004 },
@@ -112,7 +112,7 @@ describe('CUSTOMERS', () => {
 
             for (const body of bodyData) {
                 const response = await request.post("/api/customers").send(body)
-                expect(response.statusCode).toBe(404)
+                expect(response.statusCode).toBe(400)
             }
 
         })
@@ -160,7 +160,28 @@ describe('CUSTOMERS', () => {
                 .set('Accept', 'application/json')
                 .expect(200)
 
-
+        })
+        test('responds with 400 status code for invalid PUT request', async () => {
+            
+            const response = await request
+                .put("/api/customers/0")
+                .send({
+                    
+                    "first_name": "testuser",
+                    "middle_name": "D",
+                    "last_name": "Luffy",
+                    "phone_country_code": 0,
+                    "phone": 4155551,
+                    "email": "luffy@gmail.com",
+                    "customer_notes": "pirate king",
+                    "street": "grand line",
+                    "city": "east blue",
+                    "zip_code": "B5J 4X1",
+                    "country": "one piece"
+                })
+                .set('Accept', 'application/json')
+                .expect(400)
+                expect(response.text).toBe("Invalid Customer")
 
         })
         
