@@ -9,7 +9,7 @@ module.exports = (req, res, csrAttempt, dbPassword) => {
             res.status(200)
             res.json({sessionToken: sessionAuth})
         } else {
-            res.status(401).send("incorrect username or password")
+            return res.status(401).send("incorrect username or password")
         }
     });
 }
