@@ -24,38 +24,53 @@ var app = express();
 
   db.connect();
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
+app.use(cors())
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get("/api/customers", (req, res) => {
-    db.query(
-        `SELECT * FROM Customers LIMIT 2000;`,
-        (error, results, fields) => {
-            if (error || results.length == 0) {
-                res.status(400).send('No customers found');
-            } else {
-                res.json(results);
-            }
-        }
-    )
-})
+// app.use("/api/customers", customerRoutes)
+// app.use("/api/orders", orderRoutes)
+// app.use("/api/products", productRoutes)
 
-app.get("/api/customers/:id", (req, res) => {
-    db.query(
-        `SELECT * FROM Customers WHERE customer_id = ?;`,
-        [req.params.id],
-        (error, results, fields) => {
-            if (error || results.length == 0) {
-                res.status(400).send('No customer found');
-            } else {
-                res.json(results);
-            }
-        }
-    )
-})
+// app.get("/api/customers", (req, res) => {
+//     db.query(
+//         `SELECT * FROM Customers LIMIT 2000;`,
+//         (error, results, fields) => {
+//             if (error || results.length == 0) {
+//                 res.status(400).send('No customers found');
+//             } else {
+//                 res.json(results);
+//             }
+//         }
+//     )
+// })
+
+// app.get("/api/customers/:id", (req, res) => {
+//     db.query(
+//         `SELECT * FROM Customers WHERE customer_id = ?;`,
+//         [req.params.id],
+//         (error, results, fields) => {
+//             if (error || results.length == 0) {
+//                 res.status(400).send('No customer found');
+//             } else {
+//                 res.json(results);
+//             }
+//         }
+//     )
+// })
 
 app.post("/api/customers", (req, res) => {
     let validCustomer = false;
     const newCustomer = req.body;
+    console.log("ran")
+    console.log(newCustomer)
 
     // validate new customer's data fields - number, name, types
     if (
@@ -72,12 +87,15 @@ app.post("/api/customers", (req, res) => {
         typeof newCustomer.country === 'string'
     ) {
         validCustomer = true;
+        console.log("ran2")
     }
         
     if (!validCustomer) {
+        console.log("ran3")
         return res.status(400).send('Customer Not Added');
     }
 
+    
     db.query(
         `INSERT INTO Customers
         (first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
@@ -104,23 +122,6 @@ app.post("/api/customers", (req, res) => {
         }
     )
 })
-
-
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
-
-app.use(cors())
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-// app.use("/api/customers", customerRoutes)
-app.use("/api/orders", orderRoutes)
-app.use("/api/products", productRoutes)
 
 
 app.get("/", (req, res) => {
