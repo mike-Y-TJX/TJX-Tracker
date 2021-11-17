@@ -17,11 +17,41 @@ document.querySelector(".submit-button").addEventListener("click", function () {
 	document.getElementById("newProduct").appendChild(img);
 })
 
-axios.get(url).then(({data}) => {
+document.querySelector("#search-button").addEventListener('click', async(evt) => {
+	//evt.preventDefault();
+	let search_cat = document.querySelector("#dropdownMenuButton1").value;
+	let search_attr = document.querySelector("#productSearch").value;
+	
+	if (search_cat === "Product ID") {
+		const {data:search} = await axios.get(url + `?product_id_like=${search_attr}`);
+		if (search) {
+			
+		} else {
+			window.alert("Product not in directory!");
+		}
+	} else if (search_cat === "SKU Number") {
+		const {data:search} = await axios.get(url + `?product_sku_like=${search_attr}`);
+		if (search) {
+			
+		} else {
+			window.alert("Product not in directory!");
+		}
+	} else if (search_cat === "Product Name") {
+		const {data:search} = await axios.get(url + `?product_name_like=${search_attr}`);
+		if (search) {
+			
+		} else {
+			window.alert("Product not in directory!");
+		}
+	}
+		
+	})
+
+/*axios.get(url).then(({data}) => {
 
 	let productEntry = generateProducts(data);
-});
-
+	return productEntry;
+}); */
 function newProductData() {
 	let newProduct = {
 		productID: document.getElementById("validationID").value,
