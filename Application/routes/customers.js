@@ -38,36 +38,35 @@ router
 			validCustomer = true;
 		}
 			
-			// begin database transaction
-			if (!validCustomer) {
-				return res.status(400).send('Customer not added');
-			}
+		if (!validCustomer) {
+			return res.status(400).send('Customer Not Added');
+		}
 
-			db.query(
-				`INSERT INTO Customers
-				(first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
-				VALUES (?,?,?,?,?,?,?,?,?,?,?);`,
-				[
-					newCustomer.first_name,
-					newCustomer.middle_name,
-					newCustomer.last_name,
-					newCustomer.phone_country_code,
-					newCustomer.phone,
-					newCustomer.email,
-					newCustomer.customer_notes,
-					newCustomer.street,
-					newCustomer.city,
-					newCustomer.zip_code,
-					newCustomer.country,
-				],
-				(error, results, fields) => {
-					if (error || results.length == 0) {
-						res.status(400).send('Customer not added');
-					} else {
-						res.json({...newCustomer, customer_id: results.insertId});
-					}
+		db.query(
+			`INSERT INTO Customers
+			(first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
+			VALUES (?,?,?,?,?,?,?,?,?,?,?);`,
+			[
+				newCustomer.first_name,
+				newCustomer.middle_name,
+				newCustomer.last_name,
+				newCustomer.phone_country_code,
+				newCustomer.phone,
+				newCustomer.email,
+				newCustomer.customer_notes,
+				newCustomer.street,
+				newCustomer.city,
+				newCustomer.zip_code,
+				newCustomer.country,
+			],
+			(error, results, fields) => {
+				if (error || results.length == 0) {
+					res.status(400).send('Customer not added');
+				} else {
+					res.json({...newCustomer, customer_id: results.insertId});
 				}
-			)
+			}
+		)
 			
 	});
 
@@ -179,7 +178,7 @@ router
 						finalCustomer.city,
 						finalCustomer.zip_code,
 						finalCustomer.country,
-						req.params.id,
+						req.params.id
 					],
 					(error, result, fields) => {
 						if(error){
