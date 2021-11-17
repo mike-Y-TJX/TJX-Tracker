@@ -153,19 +153,19 @@ app.get("/api/products", (req, res) => {
 	)
 })
 
-// app.get("/api/products/:id", (req, res) => {
-//     db.query(
-//         `SELECT * FROM Products WHERE product_id = ?;`,
-//         [req.params.id],
-//         (error, results, fields) => {
-//             if (error || results.length == 0) {
-//                 res.status(400).send('No Product Found');
-//             } else {
-//                 res.json(results);
-//             }
-//         }
-//     )
-// })
+app.get("/api/products/:id", (req, res) => {
+    db.query(
+        `SELECT * FROM Products WHERE product_id = ?;`,
+        [req.params.id],
+        (error, results, fields) => {
+            if (error || results.length == 0) {
+                res.status(400).send('No Product Found');
+            } else {
+                res.json(results);
+            }
+        }
+    )
+})
 
 
 app.get("/", (req, res) => {
