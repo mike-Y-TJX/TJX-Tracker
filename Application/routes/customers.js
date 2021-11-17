@@ -67,7 +67,6 @@ router
 				}
 			}
 		)
-			
 	});
 
 router
