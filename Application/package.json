@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon app"
+    "start": "node app",
+    "server": "nodemon app"
   },
   "description": "nodejs-webapp-express",
   "author": {
