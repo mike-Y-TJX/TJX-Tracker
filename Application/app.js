@@ -170,7 +170,7 @@ app.get("/api/products/:id", (req, res) => {
 })
 
 
-app.get("/api/products/:id", (req, res) => {
+app.delete("/api/products/:id", (req, res) => {
     db.query(
         `DELETE FROM Products
         WHERE product_id = ?;`,
