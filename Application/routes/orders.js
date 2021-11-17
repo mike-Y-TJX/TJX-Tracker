@@ -97,7 +97,68 @@ router
 		)
 	})
 	.post(async (req, res, next) => {
-		// POST new order to database - consider as draft?
+		// customer_id, order_status, datetime_order_placed, total_order_price, order_notes
+		// {
+		// 	"order_notes": "Quos molestiae impedit ab delectus quaerat.",
+		// 	"status_desc": "1", (default)
+		//   "customer_id"
+		// 	"order_detail": [
+		// 		{
+		// 			"quantity_purchased": 1,
+		// 			"product_id": 3,
+		// 		},
+		// 		{
+		// 			"quantity_purchased": 1,
+		// 			"product_id": 10,
+		// 		}
+		// 	]
+		// }
+
+		let validOrderFields = false;
+		let validOrderProductFields = true;
+		const newOrder = req.body;
+	
+		// validate new customer's data fields - number, name, types
+		if (
+			typeof newOrder.order_notes === 'string' &&
+			typeof newOrder.customer_id === 'number' 
+		) {
+			validOrderFields = true;
+		}
+
+		newOrder.order_detail.forEach((detail) => {
+			validOrderProductFields = validOrderProductFields &&
+			typeof detail.quantity_purchased === "number" &&
+			typeof detail.product_id === "number" 
+		})
+		
+		console.log(validOrderFields)
+		console.log(validOrderProductFields)
+		if (!validOrderFields || !validOrderProductFields) {
+			return res.status(400).send('Order Not Added');
+		}
+
+		db.query(
+			`SELECT * FROM Customers WHERE customer_id = ?;`,
+			[newOrder.customer_id],
+			(error, results, fields) => {
+				if (error || results.length == 0) {
+					res.status(400).send('Not A Valid Customer ID');
+				} 
+			}
+		)
+
+		// db.query(
+		// 	`SELECT * FROM Customers WHERE customer_id = ?;`,
+		// 	[newOrder.customer_id],
+		// 	(error, results, fields) => {
+		// 		if (error || results.length == 0) {
+		// 			res.status(400).send('Not A Valid Customer ID');
+		// 		} 
+		// 	}
+		// )
+
+
 	});
 
 router
