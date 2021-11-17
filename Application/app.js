@@ -39,32 +39,32 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use("/api/orders", orderRoutes)
 // app.use("/api/products", productRoutes)
 
-// app.get("/api/customers", (req, res) => {
-//     db.query(
-//         `SELECT * FROM Customers LIMIT 2000;`,
-//         (error, results, fields) => {
-//             if (error || results.length == 0) {
-//                 res.status(400).send('No customers found');
-//             } else {
-//                 res.json(results);
-//             }
-//         }
-//     )
-// })
+app.get("/api/customers", (req, res) => {
+    db.query(
+        `SELECT * FROM Customers LIMIT 2000;`,
+        (error, results, fields) => {
+            if (error || results.length == 0) {
+                res.status(400).send('No customers found');
+            } else {
+                res.json(results);
+            }
+        }
+    )
+})
 
-// app.get("/api/customers/:id", (req, res) => {
-//     db.query(
-//         `SELECT * FROM Customers WHERE customer_id = ?;`,
-//         [req.params.id],
-//         (error, results, fields) => {
-//             if (error || results.length == 0) {
-//                 res.status(400).send('No customer found');
-//             } else {
-//                 res.json(results);
-//             }
-//         }
-//     )
-// })
+app.get("/api/customers/:id", (req, res) => {
+    db.query(
+        `SELECT * FROM Customers WHERE customer_id = ?;`,
+        [req.params.id],
+        (error, results, fields) => {
+            if (error || results.length == 0) {
+                res.status(400).send('No customer found');
+            } else {
+                res.json(results);
+            }
+        }
+    )
+})
 
 app.post("/api/customers", (req, res) => {
     let validCustomer = false;
@@ -122,6 +122,22 @@ app.post("/api/customers", (req, res) => {
         }
     )
 })
+
+// app.delete("/api/customers/:id", (req, res) => {
+//     db.query(
+//         `DELETE FROM Customers
+//         WHERE customer_id = ?;`,
+//         [req.params.id],
+//         (error, results, fields) => {
+//             var results = Object.assign({}, results);
+//             if(results.affectedRows == 0 || error){
+//                 return res.status(400).send('Customer not deleted')
+//             } else {
+//                 res.send('Successfully deleted customer');
+//             }
+//         }
+//     )
+// })
 
 
 app.get("/", (req, res) => {
