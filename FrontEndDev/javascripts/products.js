@@ -1,4 +1,4 @@
-let url = "http://localhost:3000/api/products";
+let url = "http://tjx-tracker.azurewebsites.net/api/products";
 
 document.querySelector(".submit-button").addEventListener("click", function () {
 	/*let product = newProductData();

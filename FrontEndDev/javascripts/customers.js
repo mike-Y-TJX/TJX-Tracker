@@ -1,5 +1,5 @@
 let customerId = undefined;
-let url = "http://localhost:3000/api/customers"
+let url = "http://tjx-tracker.azurewebsites.net/api/customers"
 // Using axios make a call to the API and get the customers information and render it in the table
 // NOTE: after first deployement of the backEnd server URI can be changed to the public one
 axios.get(url).then(({ data }) => {
