@@ -17,7 +17,7 @@ document.querySelector(".submit-button").addEventListener("click", function () {
 	document.getElementById("newProduct").appendChild(img);
 })
 
-document.querySelector("#search-button").addEventListener('click', async(evt) => {
+/*document.querySelector("#search-button").addEventListener('click', async(evt) => {
 	//evt.preventDefault();
 	let search_cat = document.querySelector("#dropdownMenuButton1").value;
 	let search_attr = document.querySelector("#productSearch").value;
@@ -45,13 +45,14 @@ document.querySelector("#search-button").addEventListener('click', async(evt) =>
 		}
 	}
 		
-	})
+	})*/
 
-/*axios.get(url).then(({data}) => {
+axios.get(url).then(({data}) => {
 
 	let productEntry = generateProducts(data);
 	return productEntry;
-}); */
+});
+
 function newProductData() {
 	let newProduct = {
 		productID: document.getElementById("validationID").value,
