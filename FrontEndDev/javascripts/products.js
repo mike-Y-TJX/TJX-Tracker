@@ -19,41 +19,25 @@ document.querySelector(".submit-button").addEventListener("click", function () {
 
 axios.get(url).then(({data}) => {
 
-	let productEntry = generateRows(data);
-	/*document.getElementById("products-body").replaceChildren(...productEntry);
-	document.querySelector("table").hidden = false;*/
+	let productEntry = generateProducts(data);
 });
 
 function newProductData() {
 	let newProduct = {
-		productID: document.getElementById("validationCustom01").value,
-		productName: document.getElementById("validationCustom02").value,
-		skuNumber: document.getElementById("validationCustom03").value,
-		productQuantity: document.getElementById("validationCustom04").value,
-		productDescription: document.getElementById("exampleFormControlTextarea1").value
+		productID: document.getElementById("validationID").value,
+		productSKU: document.getElementById("validationSKU").value,
+		productPrice: document.getElementById("validationPrice").value,
+		productName: document.getElementById("validationName").value,
+		productQuantity: document.getElementById("validationQuantity").value,
+		productDescription: document.getElementById("validationDescription").value,
+		productImage: document.getElementById("validationImage").value,
 	}
 
 	let productArray = [newProduct];
 	return productArray;
 }
 
-function generateRows(products){
-
-	/*let rows = products.map((product) => {
-		let row = document.createElement('tr');
-		row.insertAdjacentHTML('beforeend', `
-		<td>${product.product_id}</td>
-		<td>${product.product_sku}</td>
-		<td>${product.product_price}</td>
-		<td>${product.product_name}</td>
-		<td>${product.product_quantity}</td>
-		<td>${product.product_description}</td>
-		`
-		);
-		return row;
-
-	});
-	return rows;*/
+function generateProducts(products){
 
 	let picture = products.map((product) => {
 		let zone = document.createElement("div");
@@ -68,7 +52,7 @@ function generateRows(products){
 		learnMore.classList.add("learnMore");
 		learnMore.setAttribute("type", "button");
 		learnMore.setAttribute("data-bs-toggle", 'modal');
-		learnMore.setAttribute("data-bs-target", "#exampleModal");
+		learnMore.setAttribute("data-bs-target", "#productModal");
 		learnMore.setAttribute("id", `${product.product_sku}`);
 		learnMore.textContent = "Learn More";
 		document.getElementById(`${product.product_id}`).appendChild(img);
@@ -81,6 +65,15 @@ function generateRows(products){
 			let productPrice = document.createElement("p");
 			let productSKU = document.createElement("h5");
 			let productQ = document.createElement("p");
+			let amount = document.createElement("input");
+			amount.setAttribute("type","number");
+			amount.setAttribute("min", "0");
+			amount.setAttribute("id", "pAmount");
+			let chooseQuantity = document.createElement("span");
+			chooseQuantity.setAttribute("id", "productDetails");
+			chooseQuantity.setAttribute("style", "white-space:nowrap");
+			let qLabel = document.createElement("label");
+			qLabel.textContent = "Quantity:";
 
 			if (product.product_quantity === 0){
 				productQ.innerHTML = `<label> Item not in stock! </label>`;
@@ -97,6 +90,11 @@ function generateRows(products){
 			document.getElementById("modal-bod").appendChild(productDescription);
 			document.getElementById("modal-bod").appendChild(productPrice);
 			document.getElementById("modal-bod").appendChild(productQ);
+			document.getElementById("modal-bod").appendChild(chooseQuantity);
+			document.getElementById("productDetails").appendChild(qLabel);
+			document.getElementById("productDetails").appendChild(amount);
+
+
 		});
 	}); return picture;
 }

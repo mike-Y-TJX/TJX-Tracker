@@ -186,7 +186,7 @@ h5{
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
   }
   .submit-button:hover, .reset-button:hover, 
-  #search-button:hover, #inputGroupFileAddon04:hover, 
+  #search-button:hover, #validationImage:hover, 
   .add_button:hover, .learnMore:hover{
     background: hsl(40, 68%, 94%);
     color: #000000;
@@ -198,8 +198,10 @@ h5{
     color: #fff8f8;
     border: 2px solid black;
 }
-
-#search-button, #inputGroupFileAddon04 {
+#pAmount {
+    margin-left: 10px;
+}
+#search-button, #validationImage {
     background: #9B0C23;
     color: white;
     font-family: 'Ubuntu', sans-serif;
