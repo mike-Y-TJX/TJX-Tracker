@@ -40,6 +40,7 @@ router
 	.post(async (req, res, next) => {
 		let validCustomer = false;
 		const newCustomer = req.body;
+		
 
 		// validate new customer's data fields - number, name, types
 		if (
@@ -68,6 +69,7 @@ router
 		) {
 			validCustomer = true;
 		}
+
 
 		if (validCustomer) {
 			try {
