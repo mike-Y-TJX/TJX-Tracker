@@ -237,6 +237,9 @@ h5{
     overflow: hidden;
     white-space: nowrap;
 }
+.prefix{
+    width: 40px;
+}
 
 .zone {
     
