@@ -67,7 +67,7 @@ app.get("/api/customers/:id", (req, res) => {
     )
 })
 
-router.post("/api/customers", (req, res) => {
+app.post("/api/customers", (req, res) => {
     let validCustomer = false;
     const newCustomer = req.body;
     console.log("ran")
