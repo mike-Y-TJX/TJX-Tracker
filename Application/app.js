@@ -9,8 +9,9 @@ var bodyParser = require('body-parser');
 var cors = require('cors')
 var customerRoutes = require("./routes/customers")
 var orderRoutes = require("./routes/orders")
-var productRoutes = require("./routes/products");
-const { builtinModules } = require("module");
+var productRoutes = require("./routes/products")
+var csrRoutes = require("./routes/csr")
+
 
 var server; 
 var app = express();
@@ -29,6 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use("/api/customers", customerRoutes)
 app.use("/api/orders", orderRoutes)
 app.use("/api/products", productRoutes)
+app.use("/csr", csrRoutes)
 
 
 app.get("/", (req, res) => {
