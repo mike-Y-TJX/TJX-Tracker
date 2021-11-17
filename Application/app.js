@@ -15,21 +15,42 @@ var router = express.Router();
 var server; 
 var app = express();
 
- var connection = mysql.createConnection({
+ var db = mysql.createConnection({
     host     : 'tjx-tracker-db.mysql.database.azure.com',
     user     : 'adminuser@tjx-tracker-db',
     password : 'ILoveTJX$2021',
     database : 'stores_selling'
   });
 
-  connection.connect();
+  db.connect();
 
 
 
 app.get("/api/customers", (req, res) => {
-    connection.query('SELECT * FROM customers', function (error, results, fields) {
-        res.json(results)
-      });
+    db.query(
+        `SELECT * FROM Customers LIMIT 2000;`,
+        (error, results, fields) => {
+            if (error || results.length == 0) {
+                res.status(400).send('No customers found');
+            } else {
+                res.json(results);
+            }
+        }
+    )
+})
+
+app.get("/api/customers/:id", (req, res) => {
+    db.query(
+        `SELECT * FROM Customers WHERE customer_id = ?;`,
+        [req.params.id],
+        (error, results, fields) => {
+            if (error || results.length == 0) {
+                res.status(400).send('No customer found');
+            } else {
+                res.json(results);
+            }
+        }
+    )
 })
 
 
