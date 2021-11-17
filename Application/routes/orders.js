@@ -97,7 +97,108 @@ router
 		)
 	})
 	.post(async (req, res, next) => {
-		// POST new order to database - consider as draft?
+		// customer_id, order_status, datetime_order_placed, total_order_price, order_notes
+		// {
+		// 	"order_notes": "Quos molestiae impedit ab delectus quaerat.",
+		// 	"status_desc": "1", (default)
+		//   "customer_id"
+		// 	"order_detail": [
+		// 		{
+		// 			"quantity_purchased": 1,
+		// 			"product_id": 3,
+		// 		},
+		// 		{
+		// 			"quantity_purchased": 1,
+		// 			"product_id": 10,
+		// 		}
+		// 	]
+		// }
+
+		let validOrderFields = false;
+		let validOrderProductFields = true;
+		const newOrder = req.body;
+	
+		// validate new customer's data fields - number, name, types
+		if (
+			typeof newOrder.order_notes === 'string' &&
+			typeof newOrder.customer_id === 'number' 
+		) {
+			validOrderFields = true;
+		}
+
+		newOrder.order_detail.forEach((detail) => {
+			validOrderProductFields = validOrderProductFields &&
+			typeof detail.quantity_purchased === "number" &&
+			typeof detail.product_id === "number" 
+		})
+		
+		if (!validOrderFields || !validOrderProductFields || newOrder.order_detail.length === 0) {
+			return res.status(400).send('Order Not Added');
+		}
+
+		db.query(
+			`SELECT * FROM Customers WHERE customer_id = ?;`,
+			[newOrder.customer_id],
+			(error, results, fields) => {
+				if (error || results.length == 0) {
+					res.status(400).send('Not A Valid Customer ID');
+				} 
+			}
+		)
+
+		let questionMarkString = ""
+		let arrayOfPproductIds = []
+		let arrayOfPproductIdsWithQuantityAdded = []
+		newOrder.order_detail.forEach((product, i) => {
+			if (i + 1 < newOrder.order_detail.length){
+				questionMarkString += "?,"
+			} else {
+				questionMarkString += "?"
+			}	
+			arrayOfPproductIds.push(product.product_id)
+			arrayOfPproductIdsWithQuantityAdded.push()
+		})
+
+		db.query(
+			`SELECT * FROM Products WHERE customer_id IN (${questionMarkString});`,
+			arrayOfPproductIds,
+			(error, results, fields) => {
+				if (error || results.length != arrayOfPproductIds) {
+					res.status(400).send('Not Valid Product Ids');
+				} 
+			}
+		)
+
+		// db.query(
+		// 	`INSERT INTO Orders
+		// 	(customer_id, order_status, order_notes,)
+		// 	VALUES (?,?,?);`,
+		// 	[
+		// 		newOrder.customer_id,
+		// 		"1",
+		// 		newOrder.order_notes
+		// 	],
+		// 	(error, results, fields) => {
+		// 		if (error || results.length == 0) {
+		// 			res.status(400).send('Customer not added');
+		// 		} else {
+		// 			var order_id = newOrder.order_id
+		// 			db.query(
+		// 				`INSERT INTO Order_detail
+		// 				(customer_id, order_status, order_notes,)
+		// 				VALUES (?,?,?);`,
+		// 				arrayOfPproductIds,
+		// 				(error, results, fields) => {
+		// 					if (error || results.length != arrayOfPproductIds) {
+		// 						res.status(400).send('Not Valid Product Ids');
+		// 					} 
+		// 				}
+		// 			)
+		// 		}
+		// 	}
+		// )
+
+
 	});
 
 router

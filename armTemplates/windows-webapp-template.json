@@ -46,8 +46,28 @@
                         },
                         {
                             "name": "WEBSITE_NODE_DEFAULT_VERSION",
-                            "value": "6.9.1"
-                        }
+                            "value": "10.14.1"
+                        },
+                        {
+                            "name": "HOST",
+                            "value": "tjx-tracker-db.mysql.database.azure.com"
+                            },
+                            {
+                            "name": "USER",
+                            "value": "adminuser@tjx-tracker-db"
+                            },
+                            {
+                            "name": "PASSWORD",
+                            "value": "ILoveTJX$2021"
+                            },
+                            {
+                            "name": "DATABASE",
+                            "value": "stores_selling"
+                            },
+                            {
+                            "name": "ACCESS_TOKEN_SECRET",
+                            "value": "efc5b103f5b87e1ec730a35114585e884931a1f8279c45a2a4d23fe65f7a8f789a802b43d22e590c2a1487b4d9d4f58fba1b5c5166e60bcfa6ad6e501cf1a074"
+                            }
                     ],
                     "phpVersion": "7.1"
                 },
