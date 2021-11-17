@@ -67,62 +67,62 @@ app.get("/api/customers/:id", (req, res) => {
     )
 })
 
-// app.post("/api/customers", (req, res) => {
-//     let validCustomer = false;
-//     const newCustomer = req.body;
-//     console.log("ran")
-//     console.log(newCustomer)
+router.post("/api/customers", (req, res) => {
+    let validCustomer = false;
+    const newCustomer = req.body;
+    console.log("ran")
+    console.log(newCustomer)
 
-//     // validate new customer's data fields - number, name, types
-//     if (
-//         typeof newCustomer.first_name === 'string' &&
-//         typeof newCustomer.middle_name === 'string' &&
-//         typeof newCustomer.last_name === 'string' &&
-//         typeof newCustomer.phone_country_code === 'number' &&
-//         typeof newCustomer.phone === 'number' &&
-//         typeof newCustomer.email === 'string' &&
-//         typeof newCustomer.customer_notes === 'string' &&
-//         typeof newCustomer.street === 'string' &&
-//         typeof newCustomer.city === 'string' &&
-//         typeof newCustomer.zip_code === 'string' &&
-//         typeof newCustomer.country === 'string'
-//     ) {
-//         validCustomer = true;
-//         console.log("ran2")
-//     }
+    // validate new customer's data fields - number, name, types
+    if (
+        typeof newCustomer.first_name === 'string' &&
+        typeof newCustomer.middle_name === 'string' &&
+        typeof newCustomer.last_name === 'string' &&
+        typeof newCustomer.phone_country_code === 'number' &&
+        typeof newCustomer.phone === 'number' &&
+        typeof newCustomer.email === 'string' &&
+        typeof newCustomer.customer_notes === 'string' &&
+        typeof newCustomer.street === 'string' &&
+        typeof newCustomer.city === 'string' &&
+        typeof newCustomer.zip_code === 'string' &&
+        typeof newCustomer.country === 'string'
+    ) {
+        validCustomer = true;
+        console.log("ran2")
+    }
         
-//     if (!validCustomer) {
-//         console.log("ran3")
-//         return res.status(400).send('Customer Not Added');
-//     }
+    if (!validCustomer) {
+        console.log("ran3")
+        return res.status(400).send('Customer Not Added');
+    }
 
     
-//     db.query(
-//         `INSERT INTO Customers
-//         (first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
-//         VALUES (?,?,?,?,?,?,?,?,?,?,?);`,
-//         [
-//             newCustomer.first_name,
-//             newCustomer.middle_name,
-//             newCustomer.last_name,
-//             newCustomer.phone_country_code,
-//             newCustomer.phone,
-//             newCustomer.email,
-//             newCustomer.customer_notes,
-//             newCustomer.street,
-//             newCustomer.city,
-//             newCustomer.zip_code,
-//             newCustomer.country,
-//         ],
-//         (error, results, fields) => {
-//             if (error || results.length == 0) {
-//                 res.status(400).send('Customer not added');
-//             } else {
-//                 res.json({...newCustomer, customer_id: results.insertId});
-//             }
-//         }
-//     )
-// })
+    db.query(
+        `INSERT INTO Customers
+        (first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?);`,
+        [
+            newCustomer.first_name,
+            newCustomer.middle_name,
+            newCustomer.last_name,
+            newCustomer.phone_country_code,
+            newCustomer.phone,
+            newCustomer.email,
+            newCustomer.customer_notes,
+            newCustomer.street,
+            newCustomer.city,
+            newCustomer.zip_code,
+            newCustomer.country,
+        ],
+        (error, results, fields) => {
+            if (error || results.length == 0) {
+                res.status(400).send('Customer not added');
+            } else {
+                res.json({...newCustomer, customer_id: results.insertId});
+            }
+        }
+    )
+})
 
 app.delete("/api/customers/:id", (req, res) => {
     db.query(
