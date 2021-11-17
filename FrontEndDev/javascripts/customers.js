@@ -1,7 +1,8 @@
 let customerId = undefined;
+let url = "http://localhost:3000/api/customers"
 // Using axios make a call to the API and get the customers information and render it in the table
 // NOTE: after first deployement of the backEnd server URI can be changed to the public one
-axios.get("http://localhost:3000/api/customers").then(({ data }) => {
+axios.get(url).then(({ data }) => {
   let customerRows = generateRows(data);
   console.log(data);
   document.getElementById("tableBody").replaceChildren(...customerRows);
@@ -84,25 +85,25 @@ function getNewCustomerData(id) {
 
 $("#addButton").on("click", () => {
   if ($(".needs-validation")[0].checkValidity()) {
-    $(".needs-validation").submit((e) => {
-      e.preventDefault();
-    });
-
-    // let customer = getNewCustomerData(customerId);
-    // if (customer.customer_id === 0){
-    //   customer.customer_id = 1002;
-    //   console.log(customer);
-    //   axios.post("http://localhost:3000/api/customers",customer).then((res) => {
-    //     console.log(res);
-    //   },(err) => {
-    //     console.log(err);
-    //   });
-    // }
-    // else{
-
-    // }
-    // let customerRow = generateRows(customer);
-    // document.getElementById("tableBody").append(...customerRow);
+    let customer = getNewCustomerData(customerId);
+    if (customer.customer_id === 0){
+      delete customer.customer_id;
+      console.log(customer);
+      axios.post(url,customer).then((res) => {
+        console.log(res);
+      },(err) => {
+        console.log(err);
+      });
+    }
+    else{
+      let newUrl = url + "/" + customer.customer_id;
+      console.log(newUrl);
+      axios.put(newUrl,customer).then((res) => {
+        console.log(res);
+      },(err) => {
+        console.log(err);
+      });
+    }
   }
 });
 
@@ -111,6 +112,7 @@ $("#addButton").on("click", () => {
 $("#tableBody").on("click", function (e) {
   console.log("Clicked");
   // Show the fields when an item on the table is cliked
+  window.scrollTo({ top: 0, behavior: 'smooth' });
   $("#collapseCustomer").collapse("show");
   // Get the row that was clicked and place the information from the table in the fields
   $(e.target)
@@ -126,7 +128,7 @@ $("#tableBody").on("click", function (e) {
         let adress = element.innerHTML;
         index -= 1;
         while (adress.indexOf(";") !== -1) {
-          let val = adress.substring(0, adress.indexOf(";") - 1);
+          let val = adress.substring(0, adress.indexOf(";"));
           adress = adress.substring(adress.indexOf(";") + 1, adress.length + 1);
 
           if (index === 9) {
@@ -170,7 +172,7 @@ $("#search-button").on("click" , () => {
       if (searchOption !== "phone"){
         searchTerm = searchTerm.toLowerCase();
       }
-      axios.get("http://localhost:3000/api/customers").then(({ data }) => {
+      axios.get(url).then(({ data }) => {
       data.forEach(element => {
         if (searchOption !== "phone"){
           if (element[searchOption].toLowerCase().indexOf(searchTerm) !== -1){
