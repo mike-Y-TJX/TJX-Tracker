@@ -140,18 +140,18 @@ app.delete("/api/customers/:id", (req, res) => {
 })
 
 
-// app.get("/api/products", (req, res) => {
-// 	db.query(
-// 		`SELECT * FROM Products LIMIT 1000;`,
-// 		(error, results, fields) => {
-// 			if (error || results.length == 0) {
-// 				res.status(400).send('No products found');
-// 			} else {
-// 				res.json(results);
-// 			}
-// 		}
-// 	)
-// })
+app.get("/api/products", (req, res) => {
+	db.query(
+		`SELECT * FROM Products LIMIT 1000;`,
+		(error, results, fields) => {
+			if (error || results.length == 0) {
+				res.status(400).send('No products found');
+			} else {
+				res.json(results);
+			}
+		}
+	)
+})
 
 // app.get("/api/products/:id", (req, res) => {
 //     db.query(
