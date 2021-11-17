@@ -111,8 +111,6 @@ router
 			WHERE customer_id = ?;`,
 			[req.params.id]
 		);
-		console.log('rows');
-		console.log(rows);
 
 		let originalCustomer = {
 			first_name: rows[0].first_name,
@@ -128,55 +126,7 @@ router
 			country: rows[0].country,
 		};
 
-		// let originalCustomer = {
-		// 	first_name: await db.query(
-		// 		`SELECT first_name FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		// 	middle_name: rows[0].middle_name,
-		// 	last_name: await db.query(
-		// 		`SELECT last_name FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		// 	phone_country_code: await db.query(
-		// 		`SELECT phone_country_code FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		// 	phone: await db.query(
-		// 		`SELECT phone FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		// 	email: await db.query(
-		// 		`SELECT email FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		// 	customer_notes: await db.query(
-		// 		`SELECT customer_notes FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		// 	street: await db.query(
-		// 		`SELECT street FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		// 	city: await db.query(
-		// 		`SELECT city FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		// 	zip_code: await db.query(
-		// 		`SELECT zip_code FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		// 	country: await db.query(
-		// 		`SELECT country FROM Customers WHERE customer_id = ?;`,
-		// 		[req.params.id]
-		// 	),
-		//};
-
-		console.log('original before assign:');
-		console.log(originalCustomer);
 		const finalCustomer = Object.assign(originalCustomer, updatedCustomer);
-		console.log('final after assign:');
-		console.log(finalCustomer);
 
 		try {
 			await db.beginTransaction();

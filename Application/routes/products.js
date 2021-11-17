@@ -43,9 +43,28 @@ router
 	})
 	.put(async (req, res, next) => {
 		const updatedProduct = req.body;
+		let [rows, fields] = await db.query(
+			`SELECT product_sku, product_price, product_name,
+			product_quantity, product_description, image_url
+			FROM Products
+			WHERE product_id = ?;`,
+			[req.params.id]
+		);
+
+		let originalProduct = {
+			product_sku: rows[0].product_sku,
+			product_price: rows[0].product_price,
+			product_name: rows[0].product_name,
+			product_quantity: rows[0].product_quantity,
+			product_description: rows[0].product_description,
+			image_url: rows[0].image_url,
+		};
+
+		const finalProduct = Object.assign(originalProduct, updatedProduct);
 
 		try {
 			await db.beginTransaction();
+
 			const existingProductUpdated = await db.query(
 				`UPDATE Products SET
                 product_sku = ?,
@@ -56,12 +75,12 @@ router
                 image_url = ?
                 WHERE product_id = ?;`,
 				[
-					updatedProduct.product_sku,
-					updatedProduct.product_price,
-					updatedProduct.product_name,
-					updatedProduct.product_quantity,
-					updatedProduct.product_description,
-					updatedProduct.image_url,
+					finalProduct.product_sku,
+					finalProduct.product_price,
+					finalProduct.product_name,
+					finalProduct.product_quantity,
+					finalProduct.product_description,
+					finalProduct.image_url,
 					req.params.id,
 				]
 			);
@@ -69,7 +88,7 @@ router
 
 			// validate database was updated
 			if (existingProductUpdated[0].affectedRows > 0) {
-				res.json(updatedProduct);
+				res.json(finalProduct);
 			} else {
 				throw new Error('Product not updated');
 			}
