@@ -4,8 +4,8 @@ var router = express.Router();
 var ordersMockData = require("../mockdata/orders")
 
 /* GET users listing. */
-router.get('/', function (req, res) {
-    res.json(ordersMockData);
-});
+// router.get('/', function (req, res) {
+//     res.json(ordersMockData);
+// });
 
-module.exports = router;
+// module.exports = router;
