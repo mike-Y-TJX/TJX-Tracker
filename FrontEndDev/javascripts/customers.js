@@ -17,18 +17,20 @@ function dropdownmenuSet(val) {
  */
 function generateRows(customers) {
   let rows = customers.map((customer) => {
+    let adress = customer.street + ";" + customer.city + ";" + customer.zip_code + ";" + customer.country;
     let row = document.createElement("tr");
     row.insertAdjacentHTML(
       "beforeend",
       `
       <td>${customer.customer_id}</td>
       <td>${customer.first_name}</td>
-      <td></td>
+      <td>${customer.middle_name}</td>
       <td>${customer.last_name}</td>
+      <td>${customer.phone_country_code}</td>
       <td>${customer.phone}</td>
       <td>${customer.email}</td>
       <td class="ellipsis">${customer.customer_notes}</td>
-      <td>${customer.address}</td>
+      <td class="ellipsis">${adress}</td>
       `
     );
     return row;
@@ -63,10 +65,10 @@ function getNewCustomerData(id) {
 // Using axios make a call to the API and get the customers information and render it in the table
 // NOTE: after first deployement of the backEnd server URI can be changed to the public one
 axios
-  .get("http://tjx-tracker.azurewebsites.net/api/customers")
+  .get("http://localhost:3000/api/customers")
   .then(({ data }) => {
-    let customerRows = generateRows(data.customers);
-    console.log(data.customers);
+    let customerRows = generateRows(data);
+    console.log(data);
     document.getElementById("tableBody").replaceChildren(...customerRows);
   });
 
