@@ -8,7 +8,7 @@ on:
 env:
   AZURE_WEBAPP_NAME: "TJX-Tracker"    # set this to your application's name
   AZURE_WEBAPP_PACKAGE_PATH: "Application"      # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: '8.11.1'                        # set this to the node version to use
+  NODE_VERSION: '10.14.1'                        # set this to the node version to use
   RESOURCEGROUPNAME: "TJX-Tracker-rg"
   LOCATION: "East US"
   HOSTINGPLANNAME: "TJX-Tracker-plan"
