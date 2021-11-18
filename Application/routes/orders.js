@@ -634,13 +634,13 @@ router
 				db.query(
 					`DELETE FROM Orders
 					WHERE order_id = ?;`,
-					[req.params.id],
+					[order_id],
 					(error, results, fields) => {
 						var results = Object.assign({}, results);
 						if(results.affectedRows == 0 || error){
-							return reject('Customer not deleted')
+							return reject('Order not deleted')
 						} else {
-							return resolve('Successfully deleted customer')
+							return resolve('Successfully deleted order')
 						}
 					}
 				)
@@ -650,7 +650,7 @@ router
 		try {
 			let databaseOrder = await databaseOrderCall(order_id)	
 			// if database status is draft, you may delete it
-			if (orderUpdatesFromClient.status_id === undefined && databaseOrder.status_id == 1) {
+			if (databaseOrder.status_id == 1) {
 				let resolveMessage = await deleteAnOrder(order_id)
 				res.status(200).send(resolveMessage)
 			}
