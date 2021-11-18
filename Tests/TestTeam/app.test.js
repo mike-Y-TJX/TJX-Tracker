@@ -9,7 +9,7 @@ describe('CUSTOMERS', () => {
 
     describe('GET method for CUSTOMER endpoint', () => {
 
-        //------------TEST FOR ALL CUSTOMERS---------------------------------+
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
 
         test("respond with a 200 status code", async () => {
 
@@ -29,8 +29,10 @@ describe('CUSTOMERS', () => {
 
 
     })
-
     describe('POST method for CUSTOMER endpoint', () => {
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
+
         test('responds with 200 OK', async () => {
             const response = await request
                 .post("/api/customers")
@@ -96,6 +98,9 @@ describe('CUSTOMERS', () => {
             expect(response.body.customer_id).toBeDefined()
 
         })
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD NOT GO WELL------------------------------------------
+
         test('should respond with a status code of 400 and appropriate message for invalid post', async () => {
 
             const bodyData = [
@@ -126,11 +131,14 @@ describe('CUSTOMERS', () => {
 
     describe('GET method for CUSTOMER ID endpoint', () => {
 
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
+
         test('respond with 200 status code for valid customer id', async () => {
             const testId = "1"
             const response = await request.get(`/api/customers/${testId}`)
             expect(response.statusCode).toBe(200)
         })
+        //------- TESTS FOR WHEN REQUESTS SHOULD NOT GO WELL------------------------------------------
         test('respond with 400 status code for invalid customer id', async () => {
             const testId = "0"
             const response = await request.get(`/api/customers/${testId}`)
@@ -143,8 +151,10 @@ describe('CUSTOMERS', () => {
         })
 
     })
-
     describe('PUT method for CUSTOMER ID endpoint', () => {
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
+
         test('responds with 200 OK', async () => {
 
             const response = await request
@@ -167,6 +177,8 @@ describe('CUSTOMERS', () => {
                 .expect(200)
 
         })
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD NOT GO WELL------------------------------------------
         test('responds with 400 status code for invalid PUT request', async () => {
 
             const response = await request
@@ -221,8 +233,9 @@ describe('CUSTOMERS', () => {
         })
 
     })
-
     describe('DELETE method for CUSTOMER ID endpoint', () => {
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
 
         test("return a 200 status code for deleted customer", async () => {
 
@@ -247,9 +260,11 @@ describe('CUSTOMERS', () => {
 })
 
 describe('PRODUCTS', () => {
+
+
     describe('GET method for PRODUCTS endpoint', () => {
 
-
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
         test("respond with a 200 status code", async () => {
 
             const response = await request.get("/api/products")
@@ -268,8 +283,10 @@ describe('PRODUCTS', () => {
 
 
     })
-
     describe('POST method for PRODUCTS endpoint', () => {
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
+
         test('responds with 200 OK', async () => {
             const response = await request
                 .post("/api/products")
@@ -317,7 +334,7 @@ describe('PRODUCTS', () => {
             expect(response.body.product_id).toBeDefined()
 
         })
-
+        //------- TESTS FOR WHEN REQUESTS SHOULD NOT GO WELL------------------------------------------
         test('should respond with a status code of 400 and appropriate message for invalid parameters', async () => {
 
             const bodyData = [
@@ -341,16 +358,19 @@ describe('PRODUCTS', () => {
 
         })
 
-
     })
-
     describe('GET method for PRODUCTS ID endpoint', () => {
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
 
         test('respond with 200 status code for valid product id', async () => {
             const testId = "1"
             const response = await request.get(`/api/products/${testId}`)
             expect(response.statusCode).toBe(200)
         })
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD NOT GO WELL------------------------------------------
+
         test('respond with 400 status code for invalid products id', async () => {
             const testId = "0"
             const response = await request.get(`/api/products/${testId}`)
@@ -363,8 +383,10 @@ describe('PRODUCTS', () => {
         })
 
     })
-
     describe('PUT method for PRODUCTS ID endpoint', () => {
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
+
         test('responds with 200 OK', async () => {
 
             const response = await request
@@ -381,6 +403,7 @@ describe('PRODUCTS', () => {
                 .expect(200)
 
         })
+        //------- TESTS FOR WHEN REQUESTS SHOULD NOT GO WELL------------------------------------------
         test('responds with 400 status code for PUT request to invalid product_id', async () => {
 
             const response = await request
@@ -399,7 +422,7 @@ describe('PRODUCTS', () => {
 
         })
 
-        test('should respond with a status code of 400 and appropriate message for invalid parameters', async () => {
+        test("should respond with a status code of 400 and 'Invalid Parameters' for invalid parameters", async () => {
 
             const bodyData = [
 
@@ -424,6 +447,8 @@ describe('PRODUCTS', () => {
     })
     describe('DELETE method for PRODUCTS ID endpoint', () => {
 
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
+
         test("return a 200 status code for deleted product", async () => {
 
             const first_response = await request.get("/api/products")
@@ -445,8 +470,7 @@ describe('PRODUCTS', () => {
 
 describe('ORDERS', () => {
     describe('GET method for ORDERS endpoint', () => {
-
-
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
         test("respond with a 200 status code", async () => {
 
             const response = await request.get("/api/orders")
@@ -463,31 +487,22 @@ describe('ORDERS', () => {
             expect(response.body).not.toHaveLength(0)
         })
 
-
     })
-
     describe('POST method for ORDERS endpoint', () => {
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
         test('responds with 200 OK', async () => {
             const response = await request
                 .post("/api/orders")
                 .send({
 
-                    "order_notes": "test",
-                    "datetime_order_placed": null,
-                    "status_desc": "Draft",
-                    "customer_detail": {
-                        "first_name": "test",
-                        "middle_name": "test",
-                        "last_name": "test",
-                        "phone_country_code": 1,
-                        "phone": 7572718843,
-                        "email": "test@mail.com",
-                        "customer_notes": "Molestias aperiam debitis praesentium aliquam ad sunt.",
-                        "street": "28471 Thomas Spur",
-                        "city": "South Amandaport",
-                        "zip_code": "P1A 7Y6",
-                        "country": "Canada",
-                    }
+                    "order_notes": "testing team",
+                    "customer_id": 1,
+                    "order_detail": [
+                        {
+                            "quantity_purchased": 1,
+                            "product_id": 1
+                        }
+                    ]
 
                 })
                 .set('Accept', 'application/json')
@@ -499,29 +514,134 @@ describe('ORDERS', () => {
         test('should specify json in the content type header', async () => {
             const response = await request.post("/api/orders")
                 .send({
-                    "order_notes": "test",
-                    "datetime_order_placed": null,
-                    "status_desc": "Draft",
-                    "customer_detail": {
-                        "first_name": "test",
-                        "middle_name": "test",
-                        "last_name": "test",
-                        "phone_country_code": 1,
-                        "phone": 7572718843,
-                        "email": "test@mail.com",
-                        "customer_notes": "Molestias aperiam debitis praesentium aliquam ad sunt.",
-                        "street": "28471 Thomas Spur",
-                        "city": "South Amandaport",
-                        "zip_code": "P1A 7Y6",
-                        "country": "Canada",
-                    }
+
+                    "order_notes": "testing team",
+                    "customer_id": 1,
+                    "order_detail": [
+                        {
+                            "quantity_purchased": 1,
+                            "product_id": 1
+                        }
+                    ]
                 })
                 .set('Accept', 'application/json')
 
             expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
 
         })
+        test('response has orders Id', async () => {
+            const response = await request.post("/api/orders")
+                .send({
+                    "order_notes": "testing team",
+                    "customer_id": 1,
+                    "order_detail": [
+                        {
+                            "quantity_purchased": 1,
+                            "product_id": 1
+                        }
+                    ]
+                })
+                .set('Accept', 'application/json')
+
+            expect(response.body[0].order_id).toBeDefined()
+        })
+        //------- TESTS FOR WHEN REQUESTS SHOULD NOT GO WELL------------------------------------------
+        test("should respond with 'Not A Valid Customer ID' for posting with invalid customer id", async () => {
+            const response = await request
+                .post("/api/orders")
+                .send({
+
+                    "order_notes": "testing team",
+                    "customer_id": 0,
+                    "order_detail": [
+                        {
+                            "quantity_purchased": 1,
+                            "product_id": 1
+                        }
+                    ]
+                })
+                .set('Accept', 'application/json')
+            expect(response.text).toBe("Not A Valid Customer ID")
+
+        })
+        test("should respond with 400 for posting with invalid quantity purchased", async () => {
+            const response = await request
+                .post("/api/orders")
+                .send({
+                    "order_notes": "testing team",
+                    "customer_id": 1,
+                    "order_detail": [
+                        {
+                            "quantity_purchased": 0,
+                            "product_id": 1
+                        }
+                    ]
+                })
+                .set('Accept', 'application/json')
+                .expect(400)
+
+        })
+        test("should respond with 'Not Valid Product Ids' for posting with invalid product id", async () => {
+            const response = await request
+                .post("/api/orders")
+                .send({
+
+                    "order_notes": "testing team",
+                    "customer_id": 1,
+                    "order_detail": [
+                        {
+                            "quantity_purchased": 1,
+                            "product_id": 0
+                        }
+                    ]
+                })
+                .set('Accept', 'application/json')
+            expect(response.text).toBe('Not Valid Product Ids')
+        })
+        test("should respond with 'Not enough quantity in stock' when order demand outweighs supply", async () => {
+            const response = await request
+                .post("/api/orders")
+                .send({
+
+                    "order_notes": "testing team",
+                    "customer_id": 1,
+                    "order_detail": [
+                        {
+                            "quantity_purchased": 10000000000,
+                            "product_id": 1
+                        }
+                    ]
+                })
+                .set('Accept', 'application/json')
+            expect(response.text).toBe('Not enough quantity in stock')
+        })
     })
+    describe('GET method for ORDERS ID endpoint', () => {
+
+        //------- TESTS FOR WHEN REQUESTS SHOULD GO WELL------------------------------------------
+
+        test('respond with 200 status code for valid order id', async () => {
+            const testId = "129"
+            const response = await request.get(`/api/orders/${testId}`)
+            expect(response.statusCode).toBe(200)
+        })
+        //------- TESTS FOR WHEN REQUESTS SHOULD NOT GO WELL------------------------------------------
+
+        test('respond with 400 status code for invalid order id', async () => {
+            const testId = "0"
+            const response = await request.get(`/api/orders/${testId}`)
+            expect(response.statusCode).toBe(400)
+        })
+        test("respond with 'Order Doesnt Exist' message for invalid orders id", async () => {
+            const testId = "0"
+            const response = await request.get(`/api/orders/${testId}`)
+            expect(response.text).toBe("Order Doesnt Exist")
+        })
+
+    })
+
+
+
 
 
 })
