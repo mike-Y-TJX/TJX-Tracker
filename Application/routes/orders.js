@@ -583,6 +583,7 @@ router
 
 		
 	})
+	// will work upon cascading delete implementation
 	.delete(async (req, res, next) => {
 		let order_id = req.params.id
 
