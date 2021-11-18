@@ -97,16 +97,16 @@ router
 		})}
 
 		let questionMarkString = ""
-		let arrayOfPproductIds = []
-		let arrayOfPproductIdsWithQuantityAdded = []
+		let arrayOfProductIds = []
+		let arrayOfProductIdsWithQuantityAdded = []
 		newOrder.order_detail.forEach((product, i) => {
 			if (i + 1 < newOrder.order_detail.length){
 				questionMarkString += "?,"
 			} else {
 				questionMarkString += "?"
 			}	
-			arrayOfPproductIds.push(product.product_id)
-			arrayOfPproductIdsWithQuantityAdded.push(
+			arrayOfProductIds.push(product.product_id)
+			arrayOfProductIdsWithQuantityAdded.push(
 				{product_id:product.product_id, quantity_purchased:product.quantity_purchased}
 			)
 		})
@@ -115,9 +115,9 @@ router
 			return new Promise((resolve, reject) => {
 			db.query(
 				`SELECT * FROM Products WHERE product_id IN (${questionMarkString});`,
-				arrayOfPproductIds,
+				arrayOfProductIds,
 				(error, results, fields) => {
-					if (error || results.length != arrayOfPproductIds.length) {
+					if (error || results.length != arrayOfProductIds.length) {
 						return reject('Not Valid Product Ids')
 					} else{
 						return resolve()
@@ -126,6 +126,34 @@ router
 			)
 		})}		
 
+	let checkProductsInStock = () => {
+		return new Promise((resolve, reject) => {
+			let inStock = [];
+			db.query(
+				`SELECT product_quantity FROM Products WHERE product_id IN (${questionMarkString});`,
+				arrayOfProductIds,
+				(error, results, fields) => {
+					results.forEach((result, index) => {
+						if (
+							result.product_quantity <
+							arrayOfProductIdsWithQuantityAdded[index].quantity_purchased
+						) {
+							inStock.push(false);
+						} else {
+							inStock.push(true);
+						}
+					});
+	
+					if (error || inStock.includes(false)) {
+						return reject('Not enough quantity in stock')
+						// return res.status(400).send('Not enough quantity in stock');
+					} else{
+						return resolve();
+					}
+				}
+			);
+		})
+	}
 		
 		let orderInsert = () => { 
 			return new Promise((resolve, reject) => [
@@ -155,8 +183,8 @@ router
 			return new Promise((resolve, reject) => {
 				let insertQuestionMarkString = ""
 				let insertValueArray = []
-				arrayOfPproductIdsWithQuantityAdded.forEach((product, i) => {
-					if (i + 1 < arrayOfPproductIdsWithQuantityAdded.length){
+				arrayOfProductIdsWithQuantityAdded.forEach((product, i) => {
+					if (i + 1 < arrayOfProductIdsWithQuantityAdded.length){
 						insertQuestionMarkString += "(?,?,?),"
 					} else {
 						insertQuestionMarkString += "(?,?,?)"
@@ -225,6 +253,7 @@ router
 		try {
 			await checkCustomers()	
 			await checkProducts()
+			await checkProductsInStock()
 			let orderID = await orderInsert()
 			console.log(orderID)
 			await insertIntoOrderDetail(orderID)
