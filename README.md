@@ -4,7 +4,7 @@ TJX order tracking Nodejs Express web application built on [visual studio code](
 
 Language| Framework | Runtime | Platform | Author |
 | --------| -------- | -------- |--------|--------|
-javascript| Express | node | Azure Web App| TJX EIC September Cohort 2021 |
+javascript| Express | node 10.14.1 | Azure Web App| TJX EIC September Cohort 2021 |
 
 ## Installation
 

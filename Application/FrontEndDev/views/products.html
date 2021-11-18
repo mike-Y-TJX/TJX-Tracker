@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">   
+  <link rel = "stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" 
+  integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> <!--External font Ubuntu downloaded for the web app-->
+  <title>Products | TJX Order Tracker </title>
+</head>
+
+
+
+<body>
+  <main class="container">
+    <div class= "p-5">
+      <nav class="navbar fixed-top navbar-expand-lg navbar-light scrolling-navbar" 
+      style="background-color: #9b0c23;">
+        <a class ="text-light navbar-brand"href="#"> 
+          <strong>TJX-Order Tracker</strong></a>
+          <div class="pl-2">
+            <a class="nav-link text-light" href="customers.html">Customers </a>
+          </div>
+          <div class="pl-3">
+            <a class="nav-link text-warning" href="products.html">Products </a>
+          </div>
+    
+          <div class="pl-3">
+            <a class="nav-link text-light" href="orders.html">Orders </a>
+          </div>
+          <div class="navbar-nav ms-auto pl-3">
+            <a class="nav-link text-light" href="logout.html">Log out </a>
+          </div>     
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+          data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" 
+          aria-expanded="false" aria-label="Toggle navigation">
+          </button>
+        </nav>
+      </div>
+
+
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h1 class="display-4">Products Information</h1>
+          <p class="lead">
+            Search existing products or add new products using the options below.</p>
+        </div>
+      </div>
+      <h2> <strong>Add Product</strong> </h2>
+
+      <button class="add_button" type="button" data-bs-toggle="collapse" 
+      data-bs-target="#collapseProduct" aria-expanded="false" 
+      aria-controls="collapseProduct" id = "collapseButton">
+        Click here to add a new product
+      </button>
+
+      <div class="collapse" id="collapseProduct">
+        <div class="add_product">
+
+          <form class="needs-validation" novalidate>
+            <div class="form-row">
+              <div class="col-md-4 mb-3">
+                <label for="validationID">Product ID</label>
+                <input type="text" class="form-control" id="validationCustom01" 
+                name = "productID" placeholder="Product ID" required>
+                <label for="validationSKU">SKU Number</label>
+                <input type="text" class="form-control" id="validationCustom03" 
+                name = "SKUNumber" placeholder="SKU Number" required>
+                <label for="validationPrice">Product Price</label>
+                <input type="number" min = "0" class="form-control" id="validationCustom03" 
+                name = "productPrice" placeholder="Product Price" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="validationName">Product Name</label>
+                <input type="text" class="form-control" id="validationCustom02" 
+                name = "productname" placeholder="Product Name" required>
+                <label for="validationQuantity">Product Quantity</label>
+                <input type="number" min = "0" class="form-control" id="validationCustom04" 
+                name = "productQuantity" placeholder="Quantity" required>
+                <label for="validation-Image">Product Image</label>
+                <div class="input-group">
+                  <input type="file" class="form-control" id="validation-Image" 
+                  aria-describedby="validation-Image" aria-label="Upload">
+                  <!--<button class="btn btn-sec" type="button" id="validationImage">Upload</button>!-->
+                </div>
+                <div class="invalid-feedback">
+                Please provide a valid quantity.
+                </div>
+              </div>
+                <div class="col-md-4 mb-3">
+                  <label for="validation-Description" id = "pdescription">
+                    Product Description </label>
+                  <textarea class="form-control" id="validationDescription" 
+                  name = "productDescription" rows = "8"></textarea>
+                </div>
+            </div>
+          </form>
+          <div class = "buttons" id = "buttons">
+            <button class="submit-button" type="submit">Submit</button>
+            <button class="reset-button" type="reset">Reset</button>
+          </div>
+
+        </div>
+      </div>
+
+      <h2><strong>Search Product</strong></h2>
+
+      <div class="input-group mb-3">
+        <button class="btn btn-secondary dropdown-toggle" type="button" 
+        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="true">
+          Search using:
+        </button>
+          <ul class="dropdown-menu" role = "menu" aria-labelledby="dropdownMenuButton1">
+            <li>
+              <a class="dropdown-item" onclick = "dropdownmenuSet(this)">Product ID</a>
+            </li>
+            <li>
+              <a class="dropdown-item" onclick = "dropdownmenuSet(this)">SKU Number</a>
+            </li>
+            <li>
+              <a class="dropdown-item" onclick = "dropdownmenuSet(this)">Product Name</a>
+            </li>
+          </ul>
+          <input type="text" id = "productSearch" class="form-control" 
+          aria-label="Text input with segmented dropdown button">
+          <button type="button" class="btn btn-warning" id = "search-button">
+            <strong>Search</strong>
+          </button>
+          </div>
+
+
+  <section class = "product_portfolio" id = "catalogue">
+    <div class="zone blue grid-wrapper"></div>
+    <div class="modal fade" id="productModal" tabindex="-1" aria-labelledby="productModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="mod-title"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body" id = "modal-bod">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="close-button" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="button" class="order-button">
+              Add to Order
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="../javascripts/jquery.js"></script>
+  <script src="../javascripts/products.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</body>
+
+</html>
