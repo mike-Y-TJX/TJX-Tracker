@@ -11,7 +11,7 @@ router
 	.get(async (req, res, next) => {
 		db.query(
 			`SELECT 
-			o.order_id, o.order_notes, o.datetime_order_placed,
+			o.order_id, o.order_notes, o.datetime_order_placed, o.total_order_price,
 			od.quantity_purchased, 
 			os.status_desc, 
 			p.product_id, p.product_sku, p.product_price, p.product_name, p.product_quantity, p.product_description, p.image_url, 
@@ -266,7 +266,7 @@ router
 	.get(async (req, res, next) => {
 		db.query(
 			`SELECT 
-			o.order_id, o.order_notes, o.datetime_order_placed,
+			o.order_id, o.order_notes, o.datetime_order_placed, o.total_order_price,
 			od.quantity_purchased, 
 			os.status_desc, 
 			p.product_id, p.product_sku, p.product_price, p.product_name, p.product_quantity, p.product_description, p.image_url, 
@@ -309,6 +309,7 @@ router
 							order_id: order.order_id,
 							order_notes: order.order_notes,
 							datetime_order_placed: order.datetime_order_placed,
+							total_order_price: order.total_order_price,
 							status_desc: order.status_desc,
 							customer_detail: {
 								first_name: order.first_name,
@@ -370,30 +371,6 @@ router
 		let orderUpdatesFromClient = req.body;
 		let order_id = req.params.id;
 
-		// let validOrderUpdate = false;
-		// let validOrderProductsUpdate = [];
-
-		// validate order's data fields
-		// if (
-		// 	typeof orderUpdatesFromClient.order_notes === 'string' &&
-		// 	typeof orderUpdatesFromClient.customer_id === 'number' &&
-		// 	typeof orderUpdatesFromClient.status_id === 'number'
-		// ) {
-		// 	validOrderUpdate = true;
-		// }
-
-		// orderUpdatesFromClient.order_detail.forEach((detail) => {
-		// 	validOrderProductsUpdate.push(
-		// 		validOrderUpdate &&
-		// 			typeof detail.quantity_purchased === 'number' &&
-		// 			typeof detail.product_id === 'number'
-		// 	);
-		// });
-
-		// if (!validOrderUpdate || validOrderProductsUpdate.includes(false)) {
-		// 	return res.status(400).send('Order not updated');
-		// }
-
 		// validate order's data fields
 		let checkOrderUpdateFields = () => {
 			return new Promise((resolve, reject) => {
@@ -403,7 +380,7 @@ router
 				if (
 					(typeof orderUpdatesFromClient.order_notes === 'string' ||
 						orderUpdatesFromClient.order_notes === undefined) &&
-					(typeof orderUpdatesFromClient.status_id == 'string' ||
+					(typeof orderUpdatesFromClient.status_id === 'number' ||
 						orderUpdatesFromClient.status_id === undefined)
 				) {
 					validOrderUpdate = true;
@@ -413,7 +390,8 @@ router
 					validOrderProductsUpdate.push(
 						validOrderUpdate &&
 							typeof detail.quantity_purchased === 'number' &&
-							typeof detail.product_id === 'number'
+							typeof detail.product_id === 'number' &&
+							detail.quantityPurchased !== 0
 					);
 					console.log(detail.quantity_purchased, detail.product_id);
 				});
@@ -548,6 +526,52 @@ router
 			});
 		};
 
+		// deduct quantity purchased from quantity on-hand in database
+		// =================UNTESTED and unused so far===================
+		let updateProductQuantity = (productID, quantityPurchased) => {
+			return new Promise((resolve, reject) => {
+				db.query(
+					`UPDATE Products
+					SET product_quantity = ?
+					WHERE product_id = ?;`,
+					[
+						getOriginalProductQuantity(productID) -
+							quantityPurchased,
+						productID,
+					],
+					(error, results, fields) => {
+						let resultsArray = Object.assign({}, results);
+						if (resultsArray.affectedRows === 0 || error) {
+							return reject('Product quantity not updated');
+						} else {
+							return resolve();
+						}
+					}
+				);
+			});
+		};
+
+		// get original quantity of product from database
+		let getOriginalProductQuantity = (productID) => {
+			return new Promise((resolve, reject) => {
+				db.query(
+					`SELECT product_quantity
+					FROM Products
+					WHERE product_id = ?;`,
+					[productID],
+					(error, results, fields) => {
+						let originalQuantity = results[0].product_quantity;
+						let resultsArray = Object.assign({}, results);
+						if (resultsArray.affectedRows === 0 || error) {
+							return reject('Product quantity not found');
+						} else {
+							return resolve(originalQuantity);
+						}
+					}
+				);
+			});
+		};
+
 		let databaseOrder = await databaseOrderCall(order_id);
 
 		if (orderUpdatesFromClient.status_id < databaseOrder.status_id) {
@@ -556,8 +580,8 @@ router
 		const promises = [];
 		// if database status is draft, you can only increase status or the order notes
 		if (
-			orderUpdatesFromClient.status_id === undefined &&
-			databaseOrder.status_id == 1
+			orderUpdatesFromClient.status_id === undefined ||
+			databaseOrder.status_id <= 4
 		) {
 			console.log('in draft status');
 			var addedProductsToOrder = [];
@@ -665,10 +689,10 @@ router
 		console.log('finalOrderStatus', finalOrderStatus);
 		console.log('finalOrderNotes', finalOrderNotes);
 		try {
+			await checkOrderUpdateFields();
 			if (promises.length > 0) {
 				await Promise.all(promises);
 			}
-			await checkOrderUpdateFields();
 			await draftStatusUpdate(
 				order_id,
 				finalOrderStatus,
