@@ -20,6 +20,7 @@ router
 	.post(async (req, res, next) => {
 		let validCustomer = false;
 		const newCustomer = req.body;
+		
 
 		// validate new customer's data fields - number, name, types
 		if (
@@ -42,6 +43,43 @@ router
 			return res.status(400).send('Customer Not Added');
 		}
 
+<<<<<<< HEAD
+
+		if (validCustomer) {
+			try {
+				// begin database transaction
+				await db.beginTransaction();
+
+				// INSERT the new customer into database
+				// **NOTE** have to remove customer_id fields once auto-incrementing in DB
+				const newCustomerAdded = await db.query(
+					`INSERT INTO customer
+                    (customer_id, first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
+					VALUES (?,?,?,?,?,?,?,?,?,?,?,?);`,
+					[
+						newCustomer.customer_id,
+						newCustomer.first_name,
+						newCustomer.middle_name,
+						newCustomer.last_name,
+						newCustomer.phone_country_code,
+						newCustomer.phone,
+						newCustomer.email,
+						newCustomer.customer_notes,
+						newCustomer.street,
+						newCustomer.city,
+						newCustomer.zip_code,
+						newCustomer.country,
+					]
+				);
+
+				// commit the transaction
+				await db.commit();
+
+				// send new customer info to user
+				res.send(newCustomer);
+			} catch (er) {
+				res.status(400).send("Not Valid");
+=======
 		db.query(
 			`INSERT INTO Customers
 			(first_name, middle_name, last_name, phone_country_code, phone, email, customer_notes, street, city, zip_code, country)
@@ -65,6 +103,7 @@ router
 				} else {
 					res.json({...newCustomer, customer_id: results.insertId});
 				}
+>>>>>>> 079eb800a9ac77572fa4fa9448de289110664d42
 			}
 		)
 	});
