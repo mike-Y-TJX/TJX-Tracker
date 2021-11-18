@@ -11,6 +11,7 @@ module.exports = (results) => {
                 order_notes: order.order_notes,
                 datetime_order_placed: order.datetime_order_placed,
                 status_desc: order.status_desc,
+                status_id: order.status_id,
                 customer_detail: {
                     customer_id:order.customer_id, 
                     first_name: order.first_name,
@@ -27,6 +28,7 @@ module.exports = (results) => {
                 },
                 order_detail:[
                     {
+                        detail_id: order.detail_id,
                         quantity_purchased: order.quantity_purchased,
                         product_id: order.product_id, 
                         product_sku: order.product_sku, 
@@ -45,6 +47,7 @@ module.exports = (results) => {
             })
             orderData[orderIndex].order_detail.push(
                 {
+                    detail_id: order.detail_id,
                     quantity_purchased: order.quantity_purchased,
                     product_id: order.product_id, 
                     product_sku: order.product_sku, 
