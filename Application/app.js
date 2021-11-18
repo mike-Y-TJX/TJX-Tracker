@@ -9,9 +9,8 @@ var bodyParser = require('body-parser');
 var cors = require('cors')
 var customerRoutes = require("./routes/customers")
 var orderRoutes = require("./routes/orders")
-var productRoutes = require("./routes/products")
-var csrRoutes = require("./routes/csr")
-
+var productRoutes = require("./routes/products");
+const { builtinModules } = require("module");
 
 var server; 
 var app = express();
@@ -25,23 +24,16 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-app.use(express.static(path.join(__dirname, '/FrontEndDev')));
-
-
-
-
-
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use("/api/customers", customerRoutes)
 app.use("/api/orders", orderRoutes)
 app.use("/api/products", productRoutes)
-app.use("/csr", csrRoutes)
 
 
-// app.get("/", (req, res) => {
-//     res.render("index")
-// })
+app.get("/", (req, res) => {
+    res.render("index")
+})
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
