@@ -43,23 +43,6 @@ router
 		)
 	})
 	.post(async (req, res, next) => {
-		
-
-		// {
-		// 	"order_notes": "Quos molestiae impedit ab delectus quaerat.",
-		// 	"status_desc": "1", (default)
-		//   "customer_id"
-		// 	"order_detail": [
-		// 		{
-		// 			"quantity_purchased": 1,
-		// 			"product_id": 3,
-		// 		},
-		// 		{
-		// 			"quantity_purchased": 1,
-		// 			"product_id": 10,
-		// 		}
-		// 	]
-		// }
 
 		let validOrderFields = false;
 		let validOrderProductFields = true;
@@ -601,30 +584,79 @@ router
 		
 	})
 	.delete(async (req, res, next) => {
-		try {
-			/////////////////////////////////////////////////////////////
-			// confirm order is in "Draft" status before beginning query
-			/////////////////////////////////////////////////////////////
+		let order_id = req.params.id
 
-			await db.beginTransaction();
-
-			const existingOrderDeleted = await db.query(
-				`DELETE FROM orders
-                WHERE order_id = ?;`,
-				[req.params.id]
-			);
-
-			await db.commit();
-
-			// validate db was updated
-			if (existingOrderDeleted[0].affectedRows > 0) {
-				res.send('Successfully deleted order');
-			} else {
-				throw new Error('Order not deleted');
-			}
-		} catch (er) {
-			res.status(400).send('Order not deleted');
+		let databaseOrderCall = (order_id) => {
+			return new Promise((resolve, reject) => {
+				db.query(
+					`SELECT 
+					o.order_id, o.order_notes, o.datetime_order_placed,
+					od.quantity_purchased, od.detail_id,
+					os.status_desc, os.status_id,
+					c.customer_id, c.first_name, c.middle_name, c.last_name, c.phone_country_code, c.phone,email, c.customer_notes, c.street, c.city, c.zip_code, c.country,
+					p.product_id, p.product_sku, p.product_price, p.product_name, p.product_quantity, p.product_description, p.image_url
+					FROM orders o
+					INNER JOIN 
+					order_detail od
+					ON
+					o.order_id = od.order_id
+					INNER JOIN 
+					order_status os
+					ON
+					o.order_status = os.status_id
+					INNER JOIN 
+					customers c 
+					ON
+					c.customer_id = o.customer_id
+					INNER JOIN 
+					products p
+					ON
+					p.product_id = od.product_id
+					WHERE o.order_id = ?;`,
+					[order_id],
+					(error, results, fields) => {
+						if(error || results.length == 0){
+							
+							return reject("Order Doesnt Exist")
+						} else {
+							var results = results.map((mysqlObj, index) => {
+								return Object.assign({}, mysqlObj);
+							});
+							return resolve(processOrders(results)[0])
+						}
+				});
+			})
 		}
+
+		let deleteAnOrder = (order_id) => {
+			return new Promise((resolve, reject) => {
+				db.query(
+					`DELETE FROM Orders
+					WHERE order_id = ?;`,
+					[req.params.id],
+					(error, results, fields) => {
+						var results = Object.assign({}, results);
+						if(results.affectedRows == 0 || error){
+							return reject('Customer not deleted')
+						} else {
+							return resolve('Successfully deleted customer')
+						}
+					}
+				)
+			})
+		}
+
+		try {
+			let databaseOrder = await databaseOrderCall(order_id)	
+			// if database status is draft, you may delete it
+			if (orderUpdatesFromClient.status_id === undefined && databaseOrder.status_id == 1) {
+				let resolveMessage = await deleteAnOrder(order_id)
+				res.status(200).send(resolveMessage)
+			}
+		} catch (error) {
+			res.status(400).send(error)
+		}
+
 	});
 
 module.exports = router;
