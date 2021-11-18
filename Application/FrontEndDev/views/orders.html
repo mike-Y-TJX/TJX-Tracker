@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet"> <!--External font Ubuntu downloaded for the web app-->
 
   
-  <title>Customers Page</title>
+  <title>Orders Page </title>
 </head>
 
 
@@ -26,14 +26,14 @@
       <nav class="navbar fixed-top navbar-expand-lg navbar-light scrolling-navbar" style="background-color: #9b0c23;">
         <a class ="text-light navbar-brand"href="#"> <strong>TJX-Order Tracker</strong></a>
           <div class="pl-2">
-            <a class="nav-link text-warning" href="customers.html">Customers </a>
+            <a class="nav-link text-light" href="customers.html">Customers </a>
           </div>
           <div class="pl-3">
             <a class="nav-link text-light" href="products.html">Products </a>
           </div>
     
           <div class="pl-3">
-            <a class="nav-link text-light" href="orders.html">Orders </a>
+            <a class="nav-link text-warning" href="orders.html">Orders </a>
           </div>
           <div class="navbar-nav ms-auto pl-3">
             <a class="nav-link text-light" href="logout.html">Log out </a>
@@ -96,34 +96,34 @@
 
       <div class="jumbotron jumbotron-fluid">
         <div class="container">
-          <h1 class="display-4">Customers Information</h1>
-          <p class="lead">Search existing customers , edit their details or add new customers using the forms below.</p>
+          <h1 class="display-4">Order Information</h1>
+          <p class="lead">Search and modify existing orders.</p>
         </div>
       </div>
-      <h2> <strong>Customer</strong> </h2>
+      <h2> <strong>Order #1234</strong> </h2>
 
       <form class="needs-validation" novalidate>
         <div class="form-row">
           <div class="col-md-4 mb-3">
-            <label for="validationCustom01">First Name</label>
-            <input type="text" class="form-control" id="validationCustom01" placeholder="First Name" required>
-            <label for="validationCustom02">Middle Name</label>
-            <input type="text" class="form-control" id="validationCustom02" placeholder="Middle Name">
-            <label for="validationCustom03">Last Name</label>
-            <input type="text" class="form-control" id="validationCustom03" placeholder="Last Name" required>
+            <label for="validationCustom01">Order ID</label>
+            <input type="text" class="form-control" id="validationCustom01" placeholder="Order ID" required>
+            <label for="validationCustom02">Customer ID</label>
+            <input type="text" class="form-control" id="validationCustom02" placeholder="Customer ID">
+            <label for="validationCustom03">Order Status Code</label>
+            <input type="text" class="form-control" id="validationCustom03" placeholder="Order Status Code" required>
           </div>
           <div class="col-md-4 mb-3">
-            <label for="validationCustom04">Phone</label>
-            <input type="number" class="form-control" id="validationCustom04" placeholder="Phone" required>
-            <label for="validationCustom05">Email</label>
+            <label for="validationCustom04">Time</label>
+            <input type="number" class="form-control" id="validationCustom04" placeholder="Time" required>
+            <label for="validationCustom05">Order Price</label>
             <input type="text" class="form-control" id="validationCustom05" placeholder="Email" required>
             <!-- <div class="invalid-feedback">
             Please provide a valid quantity. -->
-            <label for="validationCustom06">Email</label>
+            <label for="validationCustom06">Quantity</label>
             <input type="text" class="form-control" id="validationCustom06" placeholder="Adress" required>
           </div>
             <div class="col-md-4 mb-3">
-              <label for="exampleFormControlTextarea1" id = "cdescription">Customer Notes</label>
+              <label for="exampleFormControlTextarea1" id = "cdescription">Order Notes</label>
               <textarea class="form-control" id="exampleFormControlTextarea1" rows = "8"></textarea>
             </div>
             <div class = "buttons">
@@ -139,17 +139,16 @@
 
 
       
-      <h2><strong>Search Customers</strong></h2>
+      <h2><strong>Search Orders</strong></h2>
 
       <div class="input-group mb-3">
           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="true">
             Search using:
           </button>
           <ul class="dropdown-menu" role = "menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" onclick = "dropdownmenuSet(this)">First Name</a></li>
-            <li><a class="dropdown-item" onclick = "dropdownmenuSet(this)">Last Name</a></li>
-            <li><a class="dropdown-item" onclick = "dropdownmenuSet(this)">Phone</a></li>
-            <li><a class="dropdown-item" onclick = "dropdownmenuSet(this)">Email</a></li>
+            <li><a class="dropdown-item" onclick = "dropdownmenuSet(this)">Order Status Code</a></li>
+            <li><a class="dropdown-item" onclick = "dropdownmenuSet(this)">Customer ID</a></li>
+            <li><a class="dropdown-item" onclick = "dropdownmenuSet(this)">Time-stamp</a></li>
           </ul>
         <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
         <button type="button" class="btn btn-warning" id = "search-button"><strong>Search</strong></button>
@@ -163,14 +162,13 @@
           <table class="table table-striped table-hover pointer">
             <thead>
               <tr>
-                <th scope="col">ID</th>
-                <th scope="col">First Name</th>
-                <th scope="col">Middle Name</th>
-                <th scope="col">Last Name</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Email</th>
+                <th scope="col">Order ID</th>
+                <th scope="col">Customer ID</th>
+                <th scope="col">Order Status Code</th>
+                <th scope="col">Order Notes</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Time-stamp</th>
                 <th scope="col">Customer Notes</th>
-                <th scope="col">Address</th>
               </tr>
             </thead>
             <tbody id="tableBody">
@@ -182,7 +180,6 @@
                 <td>dfdgdffsd</td>
                 <td>ddfgdfgfsd</td>
                 <td>dffdgdfsd</td>
-                <td>dffdgdfsd</td>
               </tr>
               <tr>
                 <th scope="row">2</th>
@@ -192,7 +189,6 @@
                 <td>dfdgdffsd</td>
                 <td>ddfgdfgfsd</td>
                 <td>dffdgdfsd</td>
-                <td>dffdgdfsd</td>
               </tr>
             </tbody>
           </table>
@@ -200,14 +196,22 @@
 
 
 
+    <script>
+	var timestamp = Date.now(); 
+	var d = new Date(timestamp); console.log(d);
+	var t = document.getElementById("validationCustom04");
+	t.placeholder = d;
+
+	</script>
 
 
 
-
+<!--
    
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="../javascripts/jquery.js"></script>
   <script src="../javascripts/customers.js"></script> 
+-->
   </main>
 </body>
 

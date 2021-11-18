@@ -130,7 +130,17 @@ p {
     font-weight: bold;
     font-size: 26px;
 }
-  
+
+h5{
+    padding-top: 20px;
+    padding-bottom: 20px;
+    color:rgb(0, 0, 0);
+    font-family: 'Ubuntu', sans-serif;
+    font-weight: bold;
+    font-style: oblique;
+    text-align: center;
+}
+
   label{
     padding-top: 1em;
     font-family: 'Ubuntu', sans-serif;
@@ -138,17 +148,18 @@ p {
     font-weight: bold;
   }
   .form-row{
-      margin-bottom: 3em;
+      margin-bottom: 1em;
       justify-content: flex-end;
   }
 
-  .submit-button, .reset-button{
+  .submit-button, .reset-button, .add_button, .learnMore{
     cursor: pointer;
     border-radius: 5em;
     padding-left: 40px;
     padding-right: 40px;
     padding-top: 4px;
     padding-bottom: 4px;
+    margin: 5px;
     border: 0;
     background: #9B0C23;
     color: white;
@@ -158,13 +169,39 @@ p {
     box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
   }
 
-  .submit-button:hover, .reset-button:hover, #search-button:hover{
+  .order-button,.close-button{
+    cursor: pointer;
+    border-radius: 5em;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    margin: 5px;
+    border: 0;
+    background: rgb(67,66,65);
+    color: white;
+    font-weight: bold;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 20px;
+    box-shadow: 0 0 20px 1px rgba(0, 0, 0, 0.04);
+  }
+  .submit-button:hover, .reset-button:hover, 
+  #search-button:hover, #validationImage:hover, 
+  .add_button:hover, .learnMore:hover{
     background: hsl(40, 68%, 94%);
     color: #000000;
     border: 2px solid black;
 }
 
-#search-button {
+.order-button:hover, .close-button:hover{
+    background:rgb(0, 55, 100);
+    color: #fff8f8;
+    border: 2px solid black;
+}
+#pAmount {
+    margin-left: 10px;
+}
+#search-button, #validationImage {
     background: #9B0C23;
     color: white;
     font-family: 'Ubuntu', sans-serif;
@@ -173,7 +210,17 @@ p {
 
 }
 
-#sbar, .input-group-text{
+#modal-bod>img{
+    margin-left: 3em;
+}
+
+.buttons{
+    display: flex;
+    justify-content: right;
+    padding: 5px;
+}
+
+#sbar, .input-group-text, .modal-body{
     font-family: 'Ubuntu', sans-serif;
 }
 @media (max-width: 600px) {
@@ -183,4 +230,61 @@ p {
 }
 .pointer {
     cursor: pointer;
+}
+.ellipsis {
+    max-width: 40px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.prefix{
+    width: 40px;
+}
+
+.zone {
+    
+    cursor:pointer;
+    display:inline-block;
+    color:#FFF;
+    font-size:2em;
+    border-radius:4px;
+    border:1px solid #bbb;
+    transition: all 0.3s linear;
+}
+
+.grid-wrapper{
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: repeat(auto-fill,minmax(400px,1fr));
+}
+
+.box>img{
+    width: 100%;
+}
+
+.box{
+    grid-column: span 3;
+    grid-row: 100%;
+    background-color:rgb(211,204,189);
+    padding: 20px;
+    margin: 30px;
+    width: 250px;
+    
+}
+
+.zone:hover {
+    -webkit-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
+    -moz-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
+    -o-box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
+    box-shadow:rgba(0,0,0,0.8) 0px 5px 15px, inset rgba(0,0,0,0.15) 0px -10px 20px;
+}
+
+.blue{
+    background: #7abcff; /* Old browsers */
+    background: -moz-linear-gradient(top, #7abcff 0%, #60abf8 44%, #4096ee 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7abcff), color-stop(44%,#60abf8), color-stop(100%,#4096ee)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%); /* IE10+ */
+    background: linear-gradient(top, #7abcff 0%,#60abf8 44%,#4096ee 100%); /* W3C */
 }
