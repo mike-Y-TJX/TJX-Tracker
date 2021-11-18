@@ -102,10 +102,20 @@ router
 				`SELECT * FROM Products WHERE product_id IN (${questionMarkString});`,
 				arrayOfProductIds,
 				(error, results, fields) => {
+					var results = results.map((mysqlObj, index) => {
+						return Object.assign({}, mysqlObj);
+					});
+					
+					var costObject = {}
+					results.forEach((prod) => {						
+						costObject[prod.product_id] = prod.product_price
+					})					
+					
+
 					if (error || results.length != arrayOfProductIds.length) {
 						return reject('Not Valid Product Ids')
 					} else{
-						return resolve()
+						return resolve(costObject)
 					}
 				}
 			)
@@ -140,20 +150,29 @@ router
 		})
 	}
 		
-		let orderInsert = () => { 
-			return new Promise((resolve, reject) => [
+		let orderInsert = (costObj) => { 
+			return new Promise((resolve, reject) => {
+			let accum = 0
+			console.log(newOrder)
+
+			newOrder.order_detail.forEach((prod) => {
+				accum += Number (costObj[String (prod.product_id)])*Number(prod.quantity_purchased)				
+			})
+			
+			accum = Number(parseFloat(accum).toFixed(2))
 			db.query(
 				`INSERT INTO Orders
-				(customer_id, order_status, order_notes)
-				VALUES (?,?,?);`,
+				(customer_id, order_status, order_notes, total_order_price)
+				VALUES (?,?,?,?);`,
 				[
 					newOrder.customer_id,
 					"1",
-					newOrder.order_notes
+					newOrder.order_notes,
+					accum
 				],
 				(error, results, fields) => {
+					console.log(error)
 					var order_id = results.insertId
-					console.log(order_id)
 					if (error || results.length == 0 || !order_id) {
 						return reject('Order not added')
 					} else {
@@ -161,7 +180,7 @@ router
 					}
 				}
 			)
-		])
+		})
 		}
 
 		let insertIntoOrderDetail = (order_id) => { 
@@ -198,7 +217,7 @@ router
 			return new Promise((resolve, reject) => {
 				db.query(
 					`SELECT 
-					o.order_id, o.order_notes, o.datetime_order_placed,
+					o.order_id, o.order_notes, o.datetime_order_placed, o.total_order_price,
 					od.quantity_purchased, 
 					os.status_desc, 
 					p.product_id, p.product_sku, p.product_price, p.product_name, p.product_quantity, p.product_description, p.image_url, 
@@ -237,10 +256,9 @@ router
 		
 		try {
 			await checkCustomers()	
-			await checkProducts()
+			const costObj = await checkProducts()
 			await checkProductsInStock()
-			let orderID = await orderInsert()
-			console.log(orderID)
+			let orderID = await orderInsert(costObj)
 			await insertIntoOrderDetail(orderID)
 			let newOrder = await retrunInsertIntoOrderDetail(orderID)
 			res.json(newOrder)
