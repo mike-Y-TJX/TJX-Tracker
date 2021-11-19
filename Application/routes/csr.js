@@ -28,13 +28,6 @@ router.post('/login', async (req, res) => {
         }
     )
         
-    // search database for unique customer username and find hashed password
-    // const dbPassword = "$2a$10$jmfPuNh.ZTVXzE1snRGuNOXaX.w2l.ew.zVDTlKGbXBWTeAWsHapu"
-
-    // authenticate user
-    // authentication(req, res, csrAttempt, dbPassword);
-
-    
 });
 
 router.get('/protected', authorization, (req, res) => {
