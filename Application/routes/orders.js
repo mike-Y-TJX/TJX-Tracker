@@ -58,7 +58,9 @@ router
 
 		newOrder.order_detail.forEach((detail) => {
 			validOrderProductFields = validOrderProductFields &&
-			typeof detail.quantity_purchased === "number" &&
+			typeof detail.quantity_purchased === "number" && 
+			detail.quantity_purchased > 0 && 
+			Number.isInteger(detail.quantity_purchased ) &&
 			typeof detail.product_id === "number" 
 		})
 		
@@ -153,7 +155,6 @@ router
 		let orderInsert = (costObj) => { 
 			return new Promise((resolve, reject) => {
 			let accum = 0
-			console.log(newOrder)
 
 			newOrder.order_detail.forEach((prod) => {
 				accum += Number (costObj[String (prod.product_id)])*Number(prod.quantity_purchased)				
@@ -171,7 +172,6 @@ router
 					accum
 				],
 				(error, results, fields) => {
-					console.log(error)
 					var order_id = results.insertId
 					if (error || results.length == 0 || !order_id) {
 						return reject('Order not added')
@@ -379,6 +379,36 @@ router
 		let orderUpdatesFromClient = req.body
 		let order_id = req.params.id
 
+		let validOrderUpdate = (orderUpdatesFromClient) => {
+			return new Promise((resolve, reject) => {
+				let validOrderFields = false;
+				let validOrderProductFields = true;
+			
+				// validate new customer's data fields - number, name, types
+				if (
+					typeof orderUpdatesFromClient.order_notes === 'string'
+				) {
+					validOrderFields = true;
+				}
+		
+				orderUpdatesFromClient.order_detail.forEach((detail) => {
+					console.log(detail.quantity_purchased)
+					validOrderProductFields = validOrderProductFields &&
+					typeof detail.quantity_purchased === "number" && 
+					detail.quantity_purchased > 0 && 
+					Number.isInteger(detail.quantity_purchased ) &&
+					typeof detail.product_id === "number" 
+				})
+				
+				if (!validOrderFields || !validOrderProductFields || orderUpdatesFromClient.order_detail.length === 0) {
+					return reject('Order Fields Not Valid')
+				} else{
+					return resolve()
+				}
+			})
+		}
+
+
 		let databaseOrderCall = (order_id) => {
 			return new Promise((resolve, reject) => {
 				db.query(
@@ -434,9 +464,7 @@ router
 						order_id,
 					],
 					(error, result, fields) => {
-						
 						if(error){
-							console.log("error")
 							return reject("database error")
 						} else {
 							return resolve()
@@ -515,12 +543,12 @@ router
 		}
 
 		try {
+		await validOrderUpdate(orderUpdatesFromClient)
 		let databaseOrder = await databaseOrderCall(order_id)
 		await rollBackHeader(databaseOrder)
 		const promises = [];
 		// if database status is draft, you can only increase status or the order notes
 		if (databaseOrder.status_id <= 4) {
-			console.log("in draft status")
 			var addedProductsToOrder = []
 			var removedProductsToOrder = []
 			var changedProductsQuantityOrder = []
@@ -588,12 +616,8 @@ router
 			}
 	
 		} 
-			console.log("not draft status")
 			var finalOrderStatus = orderUpdatesFromClient.status_id || databaseOrder.status_id
 			var finalOrderNotes = orderUpdatesFromClient.order_notes || (orderUpdatesFromClient.order_notes === "" ? "" : databaseOrder.order_notes)
-
-			console.log("finalOrderStatus", finalOrderStatus)
-			console.log("finalOrderNotes", finalOrderNotes)
 			
 				if(promises.length > 0){
 					await Promise.all(promises)
@@ -644,11 +668,9 @@ router
 							return reject("Order Doesnt Exist")
 							
 						} else {
-							console.log("ran")
 							var results = results.map((mysqlObj, index) => {
 								return Object.assign({}, mysqlObj);
 							});
-							console.log(processOrders(results)[0])
 							return resolve(processOrders(results)[0])
 						}
 				});
@@ -663,7 +685,6 @@ router
 					[order_id],
 					(error, results, fields) => {
 						var results = Object.assign({}, results);
-						console.log(error, results)
 						if(error){
 							return reject('Order not deleted')
 						} else {
@@ -691,7 +712,6 @@ router
 			await deleteAnOrder(order_id)
 			res.status(200).send("Order Successfully Deleted")
 		} catch (error) {
-			console.log("ran")
 			res.status(400).send("Order Not Deleted")
 		}
 
