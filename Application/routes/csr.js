@@ -21,6 +21,8 @@ router.post('/login', async (req, res) => {
             if(resultsArray.length == 0){
                 return res.status(401).send("Incorrect Email Or Password")
             }
+            console.log(csrAttempt)
+            console.log(resultsArray[0].rep_password)
             authentication(req, res, csrAttempt, resultsArray[0].rep_password);
 
         }
@@ -35,15 +37,13 @@ router.post('/login', async (req, res) => {
     
 });
 
-// router.get('/protected', authorization, (req, res) => {
-//     console.log(req.csr)
-//     res.json(req.csr)
-// });
+router.get('/protected', authorization, (req, res) => {
+    res.json("your in")
+});
 
-// router.get('/unprotected', (req, res) => {
-//     console.log(req.csr)
-//     res.send("access")
-// });
+router.get('/unprotected', (req, res) => {
+    res.send("access")
+});
 
 
 // router.post('/gencsr', (req, res) => {

@@ -513,7 +513,7 @@ router
 		}
 		const promises = [];
 		// if database status is draft, you can only increase status or the order notes
-		if (orderUpdatesFromClient.status_id === undefined && databaseOrder.status_id == 1) {
+		if (databaseOrder.status_id <= 4) {
 			console.log("in draft status")
 			var addedProductsToOrder = []
 			var removedProductsToOrder = []
@@ -635,12 +635,14 @@ router
 					[order_id],
 					(error, results, fields) => {
 						if(error || results.length == 0){
-							
 							return reject("Order Doesnt Exist")
+							
 						} else {
+							console.log("ran")
 							var results = results.map((mysqlObj, index) => {
 								return Object.assign({}, mysqlObj);
 							});
+							console.log(processOrders(results)[0])
 							return resolve(processOrders(results)[0])
 						}
 				});
@@ -655,25 +657,36 @@ router
 					[req.params.id],
 					(error, results, fields) => {
 						var results = Object.assign({}, results);
-						if(results.affectedRows == 0 || error){
-							return reject('Customer not deleted')
+						console.log(error, results)
+						if(error){
+							return reject('Order not deleted')
 						} else {
-							return resolve('Successfully deleted customer')
+							return resolve('Successfully deleted Order')
 						}
 					}
 				)
 			})
 		}
 
+		let orderStatusCheck = (status_id) => {
+			return new Promise((resolve, reject) => {
+				if (status_id != 1) {
+					return reject ("Order Not Deleted")
+				} else {
+					return resolve("Order Successfully Deleted")
+				}
+			})
+		}
+
 		try {
 			let databaseOrder = await databaseOrderCall(order_id)	
 			// if database status is draft, you may delete it
-			if (orderUpdatesFromClient.status_id === undefined && databaseOrder.status_id == 1) {
-				let resolveMessage = await deleteAnOrder(order_id)
-				res.status(200).send(resolveMessage)
-			}
+			let resolveMessage = await orderStatusCheck(databaseOrder.status_id)
+			await deleteAnOrder(order_id)
+			res.status(200).send("Order Successfully Deleted")
 		} catch (error) {
-			res.status(400).send(error)
+			console.log("ran")
+			res.status(400).send("Order Not Deleted")
 		}
 
 	});
