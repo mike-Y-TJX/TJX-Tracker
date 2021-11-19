@@ -10,6 +10,7 @@ var cors = require('cors')
 var customerRoutes = require("./routes/customers")
 var orderRoutes = require("./routes/orders")
 var productRoutes = require("./routes/products");
+var csrRoutes = require("./routes/csr");
 const { builtinModules } = require("module");
 
 var server; 
@@ -24,8 +25,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'FrontEndDev')));
 
+app.use("/csr", csrRoutes)
 app.use("/api/customers", customerRoutes)
 app.use("/api/orders", orderRoutes)
 app.use("/api/products", productRoutes)

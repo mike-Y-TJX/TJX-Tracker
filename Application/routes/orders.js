@@ -383,7 +383,7 @@ router
 			return new Promise((resolve, reject) => {
 				db.query(
 					`SELECT 
-					o.order_id, o.order_notes, o.datetime_order_placed,
+					o.order_id, o.order_notes, o.datetime_order_placed, o.total_order_price,
 					od.quantity_purchased, od.detail_id,
 					os.status_desc, os.status_id,
 					c.customer_id, c.first_name, c.middle_name, c.last_name, c.phone_country_code, c.phone,email, c.customer_notes, c.street, c.city, c.zip_code, c.country,
@@ -504,16 +504,22 @@ router
 			})
 		}
 
-
-		
-		let databaseOrder = await databaseOrderCall(order_id)
-
-		if (orderUpdatesFromClient.status_id < databaseOrder.status_id){
-			res.status(400).send("Can't Roll Back Status")
+		let rollBackHeader = (databaseOrder) => {
+			return new Promise((resolve, reject) => {
+				if (orderUpdatesFromClient.status_id < databaseOrder.status_id){
+					return reject ("Can't Roll Back Status")
+				} else {
+					return resolve()
+				}
+			})
 		}
+
+		try {
+		let databaseOrder = await databaseOrderCall(order_id)
+		await rollBackHeader(databaseOrder)
 		const promises = [];
 		// if database status is draft, you can only increase status or the order notes
-		if (orderUpdatesFromClient.status_id === undefined && databaseOrder.status_id == 1) {
+		if (databaseOrder.status_id <= 4) {
 			console.log("in draft status")
 			var addedProductsToOrder = []
 			var removedProductsToOrder = []
@@ -588,7 +594,7 @@ router
 
 			console.log("finalOrderStatus", finalOrderStatus)
 			console.log("finalOrderNotes", finalOrderNotes)
-			try {
+			
 				if(promises.length > 0){
 					await Promise.all(promises)
 				}
@@ -635,12 +641,14 @@ router
 					[order_id],
 					(error, results, fields) => {
 						if(error || results.length == 0){
-							
 							return reject("Order Doesnt Exist")
+							
 						} else {
+							console.log("ran")
 							var results = results.map((mysqlObj, index) => {
 								return Object.assign({}, mysqlObj);
 							});
+							console.log(processOrders(results)[0])
 							return resolve(processOrders(results)[0])
 						}
 				});
@@ -655,25 +663,36 @@ router
 					[order_id],
 					(error, results, fields) => {
 						var results = Object.assign({}, results);
-						if(results.affectedRows == 0 || error){
+						console.log(error, results)
+						if(error){
 							return reject('Order not deleted')
 						} else {
-							return resolve('Successfully deleted order')
+							return resolve('Successfully deleted Order')
 						}
 					}
 				)
 			})
 		}
 
+		let orderStatusCheck = (status_id) => {
+			return new Promise((resolve, reject) => {
+				if (status_id != 1) {
+					return reject ("Order Not Deleted")
+				} else {
+					return resolve("Order Successfully Deleted")
+				}
+			})
+		}
+
 		try {
 			let databaseOrder = await databaseOrderCall(order_id)	
 			// if database status is draft, you may delete it
-			if (databaseOrder.status_id == 1) {
-				let resolveMessage = await deleteAnOrder(order_id)
-				res.status(200).send(resolveMessage)
-			}
+			let resolveMessage = await orderStatusCheck(databaseOrder.status_id)
+			await deleteAnOrder(order_id)
+			res.status(200).send("Order Successfully Deleted")
 		} catch (error) {
-			res.status(400).send(error)
+			console.log("ran")
+			res.status(400).send("Order Not Deleted")
 		}
 
 	});
