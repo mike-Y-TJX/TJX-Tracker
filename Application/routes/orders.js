@@ -505,7 +505,7 @@ router
 		}
 
 
-		
+		try {
 		let databaseOrder = await databaseOrderCall(order_id)
 
 		if (orderUpdatesFromClient.status_id < databaseOrder.status_id){
@@ -588,7 +588,7 @@ router
 
 			console.log("finalOrderStatus", finalOrderStatus)
 			console.log("finalOrderNotes", finalOrderNotes)
-			try {
+			
 				if(promises.length > 0){
 					await Promise.all(promises)
 				}
