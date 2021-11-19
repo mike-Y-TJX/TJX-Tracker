@@ -654,7 +654,7 @@ router
 				db.query(
 					`DELETE FROM Orders
 					WHERE order_id = ?;`,
-					[req.params.id],
+					[order_id],
 					(error, results, fields) => {
 						var results = Object.assign({}, results);
 						console.log(error, results)
