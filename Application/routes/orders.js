@@ -383,7 +383,7 @@ router
 			return new Promise((resolve, reject) => {
 				db.query(
 					`SELECT 
-					o.order_id, o.order_notes, o.datetime_order_placed,
+					o.order_id, o.order_notes, o.datetime_order_placed, o.total_order_price,
 					od.quantity_purchased, od.detail_id,
 					os.status_desc, os.status_id,
 					c.customer_id, c.first_name, c.middle_name, c.last_name, c.phone_country_code, c.phone,email, c.customer_notes, c.street, c.city, c.zip_code, c.country,
