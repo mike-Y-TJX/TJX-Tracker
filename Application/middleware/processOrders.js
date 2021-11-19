@@ -8,6 +8,7 @@ module.exports = (results) => {
             processedOrders[order.order_id] = [order.detail_id];
             orderData.push({
                 order_id: order.order_id,
+                total_order_price: order.total_order_price,
                 order_notes: order.order_notes,
                 datetime_order_placed: order.datetime_order_placed,
                 status_desc: order.status_desc,
